@@ -3,13 +3,17 @@
     <header>
       <nav class="nav-extended">
         <Navbar />
-        <BreadCrumbs v-if="pageIsBreadCrumbed" />
+        <BreadCrumbs v-if="this.$route.meta.havePagination" />
       </nav>
     </header>
-    <main v-bind:class="{ 'main-bread-crumbs': pageIsBreadCrumbed }">
+    <main
+      v-bind:class="{ 'main-bread-crumbs': this.$route.meta.havePagination }"
+    >
       <article
         class="container"
-        v-bind:class="{ 'container-bread-crumbs': pageIsBreadCrumbed }"
+        v-bind:class="{
+          'container-bread-crumbs': this.$route.meta.havePagination
+        }"
       >
         <router-view></router-view>
       </article>
@@ -35,11 +39,6 @@ export default {
     ModalRegister,
     ModalLogin,
     BreadCrumbs
-  },
-  data() {
-    return {
-      pageIsBreadCrumbed: true
-    };
   },
   mounted() {
     M.Modal.init(document.querySelectorAll("#modalLogin"));

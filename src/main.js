@@ -1,7 +1,7 @@
 import Vue from "vue";
 import App from "./App.vue";
 import index from "./router";
-import store from "./router";
+import store from "./store";
 import "./registerServiceWorker";
 import "materialize-css/dist/js/materialize.min";
 
