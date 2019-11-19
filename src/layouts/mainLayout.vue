@@ -65,7 +65,7 @@ header
   position: fixed
   width: 100%
   top: 0
-  z-index: 1
+  z-index: 11
 .container
   max-width: 2000px !important
   min-height: calc(100vh - 67px)

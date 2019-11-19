@@ -13,7 +13,8 @@ export default new Vuex.Store({
       dateOfBirth: "11.12.2012",
       location: "",
       about: "Меня зовут сергей",
-      skills: {}
+      skills: {},
+      friends: {}
     }
   }
 });

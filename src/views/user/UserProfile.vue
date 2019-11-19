@@ -231,7 +231,7 @@ export default {
   },
   computed: {
     isCurrectUser() {
-      return this.$route.params.user == this.$store.state.user.profile;
+      return this.$route.params.user === this.$store.state.user.profile;
     }
   },
   mounted() {
@@ -264,10 +264,18 @@ export default {
   min-height: 100% !important
   display: grid
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr
-  grid-template-rows: 72px 1fr 1fr
+  grid-template-rows: 72px 1fr 1fr 1fr
   grid-column-gap: 15px
   grid-row-gap: 15px
-  grid-template-areas: 'head head head head head head' 'sec1 sec1 sec2 sec2 sec3 sec3' 'sec1 sec1 sec2 sec2 sec3 sec3'
+  grid-template-areas: 'head head head head head head' 'sec1 sec1 sec2 sec2 sec3 sec3' 'sec1 sec1 sec2 sec2 sec3 sec3' 'sec1 sec1 sec2 sec2 sec3 sec3'
+  @media screen and (max-width: 900px)
+    grid-template-areas: 'head head head head head head' 'sec1 sec1 sec1 sec3 sec3 sec3' 'sec2 sec2 sec2 sec2 sec2 sec2'
+    grid-template-rows: 72px 1fr 1fr
+  @media screen and (max-width: 600px)
+    grid-template-areas: 'head head head head head head' 'sec1 sec1 sec1 sec1 sec1 sec1' 'sec2 sec2 sec2 sec2 sec2 sec2' 'sec3 sec3 sec3 sec3 sec3 sec3'
+  span
+    margin: 0
+    padding: 0
 
 .header
   grid-area: head
@@ -296,7 +304,14 @@ export default {
   margin: 20px 0
 .btn
   margin-left: 5px
+  @media screen and (max-width: 800px)
+    font-size: 10px
+    height: 30px
+    line-height: 30px
+    padding: 0 5px
 img.right
   margin: 7px 0 7px 10px !important
   height: 22px
+  @media screen and (max-width: 800px)
+    display: none
 </style>

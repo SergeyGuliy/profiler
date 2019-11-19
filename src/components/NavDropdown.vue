@@ -3,7 +3,7 @@
     <div v-if="this.$store.state.user.profile">
       <ul class="right">
         <li>
-          <a class="dropdown-trigger" href="#!" data-target="dropdown1"
+          <a class="dropdown-trigger" href="#" data-target="dropdown1"
             >Здраствуйте Сергей<i class="material-icons right"
               >arrow_drop_down</i
             ></a
@@ -19,7 +19,7 @@
         </li>
         <li class="divider"></li>
         <li>
-          <router-link to="/see/friends"
+          <router-link to="/sergey/friends"
             >Котакты
             <img class="right ico" src="../assets/icons/showFriends.png" alt=""
           /></router-link>
@@ -57,7 +57,7 @@
     <div v-else>
       <ul class="right">
         <li>
-          <a class="dropdown-trigger" href="#!" data-target="dropdown1"
+          <a class="dropdown-trigger" href="#" data-target="dropdown1"
             >Войдите в систему<i class="material-icons right"
               >arrow_drop_down</i
             ></a
