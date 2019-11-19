@@ -47,11 +47,5 @@ export default {
 img.right
   width: 22px
 li > a
-  padding: 0 10px
-a.dropdown-trigger
-  padding:  0 5px
-i.right
-  margin: 0 3px 0 1px !important
-.nav-content div
-  margin-left: 10pxlogin
+  padding: 0 10px !important
 </style>

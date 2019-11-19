@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="this.$store.state.userLoggedIn">
+    <div v-if="this.$store.state.user.profile">
       <ul class="right">
         <li>
           <a class="dropdown-trigger" href="#!" data-target="dropdown1"
@@ -12,7 +12,7 @@
       </ul>
       <ul id="dropdown1" class="dropdown-content">
         <li>
-          <router-link to="/ssee"
+          <router-link to="/sergey"
             >Профиль
             <img class="right ico" src="../assets/icons/user.png" alt=""
           /></router-link>
@@ -38,8 +38,8 @@
             <img class="right ico" src="../assets/icons/showGitHub.png" alt=""
           /></router-link>
         </li>
-        <li v-if="this.$store.state.userIsAdmin" class="divider"></li>
-        <li v-if="this.$store.state.userIsAdmin">
+        <li v-if="this.$store.state.user.isAdmin" class="divider"></li>
+        <li v-if="this.$store.state.user.isAdmin">
           <router-link to="/admin" exact
             >Админка
             <img class="right ico" src="../assets/icons/adminBase.png" alt=""
@@ -93,4 +93,11 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped lang="sass">
+i.right
+  margin: 0 !important
+.nav-content div
+  margin-left: 10px
+.dropdown-trigger
+  padding:  0 5px !important
+</style>

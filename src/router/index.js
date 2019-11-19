@@ -39,7 +39,6 @@ const index = new VueRouter({
     },
     {
       path: "/:user",
-      name: "user",
       meta: { layout: "main-layout" },
       component: () => import("../views/user/User"),
       children: [

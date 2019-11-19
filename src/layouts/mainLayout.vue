@@ -51,6 +51,7 @@ export default {
       constrainWidth: true,
       coverTrigger: false
     });
+    M.updateTextFields();
   }
 };
 </script>
@@ -63,11 +64,12 @@ main
 header
   position: fixed
   width: 100%
-  top: 0px
+  top: 0
+  z-index: 1
 .container
-  background-color: orange
   max-width: 2000px !important
   min-height: calc(100vh - 67px)
+  padding: 5px 0
   @media screen and (min-width: 601px)
     width: 85% !important
   @media screen and (min-width: 993px)

@@ -5,8 +5,15 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    user: "sergey",
-    userLoggedIn: true,
-    userIsAdmin: true
+    user: {
+      isAdmin: true,
+      profile: "sergey",
+      first_name: "Сергей",
+      second_name: "Гулий",
+      dateOfBirth: "11.12.2012",
+      location: "",
+      about: "Меня зовут сергей",
+      skills: {}
+    }
   }
 });

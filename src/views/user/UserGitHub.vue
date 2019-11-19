@@ -1,5 +1,8 @@
 <template>
-  <h1 class="center">UserGitHub</h1>
+  <div>
+    <h4 class="center">UserGitHub</h4>
+    <h1 class="center">User {{ this.$route.params.user }}</h1>
+  </div>
 </template>
 
 <script>
