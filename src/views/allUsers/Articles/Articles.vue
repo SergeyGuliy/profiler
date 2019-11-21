@@ -1,13 +1,13 @@
 <template>
   <div class="grid">
     <div class="header">
-      <span class="badge">Друзья</span>
+      <span class="badge">Статьи</span>
       <div>
-        <input id="search" type="text" class="validate" />
+        <input type="text" class="validate" />
         <button class="btn">
           Поиск<img
             class="right ico"
-            src="../../assets/icons/search.png"
+            src="../../../assets/icons/search.png"
             alt=""
           />
         </button>
@@ -19,7 +19,7 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>Имя</th>
+              <th>Название</th>
               <th>Оценка</th>
               <th>Профиль</th>
             </tr>
@@ -32,9 +32,10 @@
               <td>18</td>
               <td class="flex">
                 <button class="btn">
-                  <img src="../../assets/icons/user.png" alt="" /></button
-                ><button class="btn del">
-                  <img src="../../assets/icons/delete.png" alt="" />
+                  <img src="../../../assets/icons/showArticles.png" alt="" />
+                </button>
+                <button class="btn del">
+                  <img src="../../../assets/icons/delete.png" alt="" />
                 </button>
               </td>
             </tr>
@@ -47,7 +48,7 @@
 
 <script>
 export default {
-  name: "UserFriends"
+  name: "Articles"
 };
 </script>
 

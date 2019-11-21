@@ -2,11 +2,6 @@
   <ul class="sidenav" id="mobile-demo">
     <li><a class="subheader">Profiler</a></li>
     <li>
-      <router-link exact to="/" active-class="active" class="brand-logo"
-        >На главную</router-link
-      >
-    </li>
-    <li>
       <router-link active-class="active" to="/users">Пользователи</router-link>
     </li>
     <li>

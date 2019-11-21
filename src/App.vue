@@ -30,6 +30,7 @@ export default {
 
 <style lang="sass">
 @import "../node_modules/materialize-css/dist/css/materialize.min.css"
+@import "assets/index"
 .main-layout
   width: 100vw
 h1

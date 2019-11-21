@@ -12,42 +12,62 @@
       </ul>
       <ul id="dropdown1" class="dropdown-content">
         <li>
-          <router-link to="/sergey"
+          <router-link
+            :to="{
+              name: 'user',
+              params: { user: this.$store.state.user.profile }
+            }"
             >Профиль
             <img class="right ico" src="../assets/icons/user.png" alt=""
           /></router-link>
         </li>
         <li class="divider"></li>
         <li>
-          <router-link to="/sergey/friends"
+          <router-link
+            :to="{
+              name: 'my-friends',
+              params: { user: this.$store.state.user.profile }
+            }"
             >Котакты
             <img class="right ico" src="../assets/icons/showFriends.png" alt=""
           /></router-link>
         </li>
         <li class="divider"></li>
         <li>
-          <router-link to="/see/articles"
+          <router-link
+            :to="{
+              name: 'my-articles',
+              params: { user: this.$store.state.user.profile }
+            }"
             >Статьи
             <img class="right ico" src="../assets/icons/showArticles.png" alt=""
           /></router-link>
         </li>
         <li class="divider"></li>
         <li>
-          <router-link to="/see/github"
+          <router-link
+            :to="{
+              name: 'my-github',
+              params: { user: this.$store.state.user.profile }
+            }"
             >GitHub
             <img class="right ico" src="../assets/icons/showGitHub.png" alt=""
           /></router-link>
         </li>
         <li v-if="this.$store.state.user.isAdmin" class="divider"></li>
         <li v-if="this.$store.state.user.isAdmin">
-          <router-link to="/admin" exact
+          <router-link
+            :to="{
+              name: 'admin',
+              params: { user: this.$store.state.user.profile }
+            }"
             >Админка
             <img class="right ico" src="../assets/icons/adminBase.png" alt=""
           /></router-link>
         </li>
         <li class="divider"></li>
         <li>
-          <router-link to=""
+          <router-link to="/"
             >Выйти
             <img class="right ico" src="../assets/icons/logout.png" alt=""
           /></router-link>

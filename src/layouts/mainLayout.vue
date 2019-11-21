@@ -3,18 +3,10 @@
     <header>
       <nav class="nav-extended">
         <Navbar />
-        <BreadCrumbs v-if="this.$route.meta.havePagination" />
       </nav>
     </header>
-    <main
-      v-bind:class="{ 'main-bread-crumbs': this.$route.meta.havePagination }"
-    >
-      <article
-        class="container"
-        v-bind:class="{
-          'container-bread-crumbs': this.$route.meta.havePagination
-        }"
-      >
+    <main>
+      <article class="container">
         <router-view></router-view>
       </article>
     </main>
@@ -30,15 +22,13 @@ import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
 import ModalLogin from "../components/ModalLogin";
 import ModalRegister from "../components/ModalRegister";
-import BreadCrumbs from "../components/BreadCrumbs";
 export default {
   name: "mainLayout",
   components: {
     Navbar,
     Sidebar,
     ModalRegister,
-    ModalLogin,
-    BreadCrumbs
+    ModalLogin
   },
   mounted() {
     M.Modal.init(document.querySelectorAll("#modalLogin"));
@@ -57,10 +47,11 @@ export default {
 </script>
 
 <style scoped lang="sass">
-.main-bread-crumbs
-  margin-top: 95px !important
+.main-layout
+  width: 100%
 main
   margin-top: 67px !important
+  width: 100%
 header
   position: fixed
   width: 100%
@@ -73,9 +64,7 @@ header
   @media screen and (min-width: 601px)
     width: 85% !important
   @media screen and (min-width: 993px)
-    width: 85% !important
-.container-bread-crumbs
-  min-height: calc(100vh - 95px) !important
+    width: 90% !important
 .sidenav-overlay
   left: 300px !important
   transition: 50ms ease all
