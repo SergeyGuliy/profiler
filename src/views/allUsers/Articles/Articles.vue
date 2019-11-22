@@ -15,7 +15,7 @@
     </div>
     <div class="section-1">
       <div class="input-field center">
-        <table class="highlight centered">
+        <table class="highlight centered table">
           <thead>
             <tr>
               <th>#</th>
@@ -26,14 +26,20 @@
           </thead>
 
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>Eclair</td>
-              <td>18</td>
+            <tr v-for="arcticle in articles" :key="arcticle.id">
+              <td>{{ arcticle.id }}</td>
+              <td>{{ arcticle.name }}</td>
+              <td>{{ arcticle.rate }}</td>
               <td class="flex">
-                <button class="btn">
+                <router-link
+                  class="btn"
+                  :to="{
+                    name: 'article',
+                    params: { article: arcticle.name }
+                  }"
+                >
                   <img src="../../../assets/icons/showArticles.png" alt="" />
-                </button>
+                </router-link>
                 <button class="btn del">
                   <img src="../../../assets/icons/delete.png" alt="" />
                 </button>
@@ -48,7 +54,31 @@
 
 <script>
 export default {
-  name: "Articles"
+  name: "Articles",
+  data() {
+    return {
+      articles: [
+        {
+          id: 1,
+          name: "sergey",
+          rate: 6,
+          link: "qwe"
+        },
+        {
+          id: 2,
+          name: "serg",
+          rate: 6,
+          link: "wQQQQw"
+        },
+        {
+          id: 3,
+          name: "gey",
+          rate: 6,
+          link: "we12231w"
+        }
+      ]
+    };
+  }
 };
 </script>
 

@@ -5,18 +5,63 @@
         <h4 class="center">Вход в систему</h4>
         <div class="row">
           <div class="input-field col s12">
-            <input id="email" type="email" class="validate" />
+            <input
+              id="email"
+              type="email"
+              class="validate"
+              v-model="email"
+              v-bind:class="{
+                invalid: !$v.email.required || !$v.email.email
+              }"
+            />
             <label for="email">Email</label>
+            <small class="helper-text invalid" v-if="!$v.email.required"
+              >Поле Email недолжно быть пустым</small
+            >
+            <small class="helper-text invalid" v-else-if="!$v.email.email"
+              >Введите коректный Email</small
+            >
           </div>
           <div class="input-field col s12">
-            <input id="password" type="password" class="validate" />
+            <input
+              id="password"
+              type="password"
+              class="validate"
+              v-model="password"
+              v-bind:class="{
+                invalid:
+                  !$v.password.required ||
+                  !$v.password.minLength ||
+                  !$v.password.maxLength
+              }"
+            />
             <label for="password">Password</label>
+            <small class="helper-text invalid" v-if="!$v.password.required"
+              >Введите пароль</small
+            >
+            <small
+              class="helper-text invalid"
+              v-else-if="!$v.password.minLength"
+              >Пародь должен иметь 8 знаков и более</small
+            >
+            <small
+              class="helper-text invalid"
+              v-else-if="!$v.password.maxLength"
+              >Пароль не может быть длинее 12 знаков</small
+            >
           </div>
-          <button class="btn modal-close f col s12">
+          <button
+            class="btn modal-close f col s12"
+            v-bind:class="{
+              disabled:
+                !$v.email.required ||
+                !$v.email.email ||
+                !$v.password.required ||
+                !$v.password.minLength ||
+                !$v.password.maxLength
+            }"
+          >
             Войти<i class="material-icons right">send</i>
-          </button>
-          <button class="btn modal-close col s12">
-            Закрыть<i class="material-icons right">cancel</i>
           </button>
         </div>
       </form>
@@ -25,8 +70,24 @@
 </template>
 
 <script>
+import {
+  email,
+  required,
+  minLength,
+  maxLength
+} from "vuelidate/lib/validators";
 export default {
-  name: "ModalLogin"
+  name: "ModalLogin",
+  data() {
+    return {
+      email: "",
+      password: ""
+    };
+  },
+  validations: {
+    email: { email, required },
+    password: { minLength: minLength(8), maxLength: maxLength(12), required }
+  }
 };
 </script>
 

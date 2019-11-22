@@ -1,7 +1,7 @@
 <template>
   <div class="grid">
     <div class="header">
-      <span class="badge">Профиль</span>
+      <span class="badge">Админкаrepositories</span>
       <div v-if="!editEnabled">
         <router-link
           class="btn"

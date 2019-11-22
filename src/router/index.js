@@ -9,7 +9,6 @@ const index = new VueRouter({
   routes: [
     {
       path: "/",
-      name: "home",
       meta: { layout: "main-layout" },
       component: () => import("../views/Home")
     },
@@ -20,10 +19,22 @@ const index = new VueRouter({
       component: () => import("../views/allUsers/Users/Users")
     },
     {
+      path: "/users/:user",
+      name: "user",
+      meta: { layout: "main-layout" },
+      component: () => import("../views/allUsers/Users/User")
+    },
+    {
       path: "/articles",
       name: "articles",
       meta: { layout: "main-layout" },
       component: () => import("../views/allUsers/Articles/Articles")
+    },
+    {
+      path: "/articles/:article",
+      name: "article",
+      meta: { layout: "main-layout" },
+      component: () => import("../views/allUsers/Articles/Article")
     },
     {
       path: "/repositories",
@@ -32,13 +43,19 @@ const index = new VueRouter({
       component: () => import("../views/allUsers/Repositories/Repositories")
     },
     {
+      path: "/repositories/:repository",
+      name: "repository",
+      meta: { layout: "main-layout" },
+      component: () => import("../views/allUsers/Repositories/Repository")
+    },
+    {
       path: "/:user",
       meta: { layout: "main-layout" },
       component: () => import("../views/user/User"),
       children: [
         {
           path: "",
-          name: "user",
+          name: "profile",
           meta: { layout: "main-layout" },
           component: () => import("../views/user/UserProfile")
         },

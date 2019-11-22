@@ -15,7 +15,7 @@
     </div>
     <div class="section-1">
       <div class="input-field center">
-        <table class="highlight centered">
+        <table class="highlight centered table">
           <thead>
             <tr>
               <th>#</th>

@@ -43,19 +43,7 @@
       width: 32%
       &:first-child
         width: 4%
-    td.flex
-      display: flex
-      justify-content: center
-      align-items: center
-      .btn
-        display: flex
-        justify-content: center
-        align-items: center
-        margin: 0 2px
-        img
-          height: 25px
-      .del
-        background-color: orange
+
   .section-2
     grid-area: sec2
     padding: 15px
@@ -69,26 +57,40 @@
 
 
 
-table
-  th, td
-    padding: 5px 4px
-    height: 47px
-    font-size: 11px
-    @media screen and (min-width: 900px)
-      font-size: 14px
-    .btn
-      padding: 0 5px
-      margin: 0
-      height: 25px
-      line-height: 25px
+  table.table
+    th, td
+      padding: 5px 4px
+      height: 47px
       font-size: 11px
       @media screen and (min-width: 900px)
         font-size: 14px
-        height: 30px
-        line-height: 30px
+      .btn
+        padding: 0 5px
+        margin: 0
+        height: 25px
+        line-height: 25px
+        font-size: 11px
+        @media screen and (min-width: 900px)
+          font-size: 14px
+          height: 30px
+          line-height: 30px
+    td.flex
+      display: flex
+      justify-content: center
+      align-items: center
+      .btn
+        display: flex
+        justify-content: center
+        align-items: center
+        margin: 0 2px
+        img
+          height: 25px
+      .del
+        background-color: orange
 
-img.right
-  margin: 7px 0 7px 10px
-  height: 22px
-  @media screen and (max-width: 800px)
-    display: none
+
+  img.right
+    margin: 7px 0 7px 10px
+    height: 22px
+    @media screen and (max-width: 800px)
+      display: none

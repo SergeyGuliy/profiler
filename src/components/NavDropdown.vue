@@ -14,7 +14,7 @@
         <li>
           <router-link
             :to="{
-              name: 'user',
+              name: 'profile',
               params: { user: this.$store.state.user.profile }
             }"
             >Профиль
