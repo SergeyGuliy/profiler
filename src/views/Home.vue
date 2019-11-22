@@ -1,12 +1,22 @@
 <template>
   <div>
-    <h1>This is an home page</h1>
-    <p class="flow-text">I am Flow Text</p>
+    <h1 v-if="loading">This is an home page</h1>
+    <Loader v-else />
   </div>
 </template>
 
 <script>
+import Loader from "../components/Loader";
 export default {
-  name: "home"
+  name: "home",
+  components: { Loader },
+  data() {
+    return {
+      loading: true
+    };
+  },
+  mounted() {
+    this.loading = true;
+  }
 };
 </script>

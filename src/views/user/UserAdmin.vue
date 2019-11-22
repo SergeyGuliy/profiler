@@ -1,72 +1,78 @@
 <template>
-  <div class="grid">
-    <div class="header">
-      <span class="badge">Админкаrepositories</span>
-      <div v-if="!editEnabled">
-        <router-link
-          class="btn"
-          v-if="this.$store.state.user.skills"
-          append
-          to="skills"
-        >
-          Навыки<img
-            class="right ico"
-            src="../../assets/icons/skills.png"
-            alt=""
-          />
-        </router-link>
-        <button class="btn" v-if="this.$store.state.user.isAdmin">
-          Админ<img
-            class="right ico"
-            src="../../assets/icons/adminBase.png"
-            alt=""
-          />
-        </button>
-        <button class="btn" v-on:click="editingStart">
-          Изменить<img
-            class="right ico"
-            src="../../assets/icons/userEdit.png"
-            alt=""
-          />
-        </button>
+  <div>
+    <div class="grid" v-if="loading">
+      <div class="header">
+        <span class="badge">Админкаrepositories</span>
+        <div v-if="!editEnabled">
+          <router-link
+            class="btn"
+            v-if="this.$store.state.user.skills"
+            append
+            to="skills"
+          >
+            Навыки<img
+              class="right ico"
+              src="../../assets/icons/skills.png"
+              alt=""
+            />
+          </router-link>
+          <button class="btn" v-if="this.$store.state.user.isAdmin">
+            Админ<img
+              class="right ico"
+              src="../../assets/icons/adminBase.png"
+              alt=""
+            />
+          </button>
+          <button class="btn" v-on:click="editingStart">
+            Изменить<img
+              class="right ico"
+              src="../../assets/icons/userEdit.png"
+              alt=""
+            />
+          </button>
+        </div>
+        <div v-else>
+          <button class="btn" v-on:click="editingSave">
+            Сохранить<img
+              class="right ico"
+              src="../../assets/icons/save.png"
+              alt=""
+            />
+          </button>
+          <button class="btn" v-on:click="editingUnsave">
+            Отменить<img
+              class="right ico"
+              src="../../assets/icons/unsave.png"
+              alt=""
+            />
+          </button>
+        </div>
       </div>
-      <div v-else>
-        <button class="btn" v-on:click="editingSave">
-          Сохранить<img
-            class="right ico"
-            src="../../assets/icons/save.png"
-            alt=""
+      <div class="section-1">
+        <div class="input-field center">
+          <input
+            id="first_name_change"
+            type="text"
+            class="validate"
+            v-bind:disabled="!editEnabled"
           />
-        </button>
-        <button class="btn" v-on:click="editingUnsave">
-          Отменить<img
-            class="right ico"
-            src="../../assets/icons/unsave.png"
-            alt=""
-          />
-        </button>
+          <label for="first_name_change">Имя</label>
+        </div>
       </div>
     </div>
-    <div class="section-1">
-      <div class="input-field center">
-        <input
-          id="first_name_change"
-          type="text"
-          class="validate"
-          v-bind:disabled="!editEnabled"
-        />
-        <label for="first_name_change">Имя</label>
-      </div>
-    </div>
+    <Loader v-else />
   </div>
 </template>
 
 <script>
+import Loader from "../../components/Loader";
 export default {
   name: "UserAdmin",
+  components: { Loader },
   data() {
     return {
-      editEnabled: false
+      editEnabled: false,
+      loading: false
     };
   },
   methods: {
@@ -79,6 +85,9 @@ export default {
     editingUnsave() {
       this.editEnabled = false;
     }
+  },
+  mounted() {
+    this.loading = true;
   }
 };
 </script>
