@@ -1,20 +1,13 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import authData from "./authData";
+import loggedInUser from "./loggedInUser";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {
-    user: {
-      isAdmin: true,
-      profile: "sergey",
-      first_name: "Сергей",
-      second_name: "Гулий",
-      dateOfBirth: "11.12.2012",
-      location: "",
-      about: "Меня зовут сергей",
-      skills: {},
-      friends: {}
-    }
+  modules: {
+    authData,
+    loggedInUser
   }
 });

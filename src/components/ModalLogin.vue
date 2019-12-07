@@ -1,7 +1,7 @@
 <template>
   <div id="modalLogin" class="modal">
     <div class="modal-content">
-      <form>
+      <form v-on:submit.prevent="submitLogin">
         <h4 class="center">Вход в систему</h4>
         <div class="row">
           <div class="input-field col s12">
@@ -87,6 +87,20 @@ export default {
   validations: {
     email: { email, required },
     password: { minLength: minLength(8), maxLength: maxLength(12), required }
+  },
+  methods: {
+    async submitLogin() {
+      const formData = {
+        email: this.email,
+        password: this.password
+      };
+      try {
+        await this.$store.dispatch("logIn", formData);
+      } catch (e) {
+        console.log(e);
+      }
+      this.$store.commit("userLogIn");
+    }
   }
 };
 </script>

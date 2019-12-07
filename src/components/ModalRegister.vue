@@ -1,7 +1,7 @@
 <template>
   <div id="modalRegistration" class="modal">
     <div class="modal-content">
-      <form>
+      <form v-on:submit.prevent="submitRegisteration">
         <h4 class="center">Регистрация</h4>
         <div class="row">
           <div class="input-field col s12">
@@ -89,6 +89,7 @@
           </div>
           <button
             class="btn modal-close f col s12"
+            type="submit"
             v-bind:class="{
               disabled:
                 !agreement ||
@@ -131,6 +132,20 @@ export default {
     email: { email, required },
     password: { minLength: minLength(8), maxLength: maxLength(12), required },
     passwordRepeat: { samePassword: sameAs("password") }
+  },
+  methods: {
+    async submitRegisteration() {
+      const formData = {
+        email: this.email,
+        password: this.password
+      };
+      try {
+        await this.$store.dispatch("createNewUser", formData);
+      } catch (e) {
+        console.log(e);
+      }
+      this.$store.commit("userLogIn");
+    }
   }
 };
 </script>

@@ -1,7 +1,13 @@
 <template>
   <div>
-    <router-view v-if="isCurrectUser"></router-view>
-    <Error v-else />
+    <router-view
+      v-if="this.$route.params.user === this.$store.getters.user.profile"
+    />
+    <Error
+      v-else-if="
+        !(this.$route.params.user === this.$store.getters.user.profile)
+      "
+    />
   </div>
 </template>
 
@@ -9,12 +15,7 @@
 import Error from "../../components/Error";
 export default {
   name: "User",
-  components: { Error },
-  computed: {
-    isCurrectUser() {
-      return this.$route.params.user === this.$store.state.user.profile;
-    }
-  }
+  components: { Error }
 };
 </script>
 

@@ -4,19 +4,14 @@
       <div class="header">
         <span class="badge">Админкаrepositories</span>
         <div v-if="!editEnabled">
-          <router-link
-            class="btn"
-            v-if="this.$store.state.user.skills"
-            append
-            to="skills"
-          >
+          <router-link class="btn" append to="skills">
             Навыки<img
               class="right ico"
               src="../../assets/icons/skills.png"
               alt=""
             />
           </router-link>
-          <button class="btn" v-if="this.$store.state.user.isAdmin">
+          <button class="btn">
             Админ<img
               class="right ico"
               src="../../assets/icons/adminBase.png"

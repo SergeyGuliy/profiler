@@ -3,34 +3,18 @@
     <div class="grid" v-if="loading">
       <div class="header">
         <span class="badge">Профиль</span>
-        <div v-if="!editEnabled">
-          <button class="btn" v-if="this.$store.state.user.isAdmin">
+        <div>
+          <button class="btn" v-if="!this.$store.getters.user.isAdmin">
             Стать Админом<img
               class="right ico"
               src="../../assets/icons/adminBase.png"
               alt=""
             />
           </button>
-          <button class="btn" v-on:click="editingStart">
-            Изменить<img
-              class="right ico"
-              src="../../assets/icons/userEdit.png"
-              alt=""
-            />
-          </button>
-        </div>
-        <div v-else>
           <button class="btn" v-on:click="editingSave">
             Сохранить<img
               class="right ico"
               src="../../assets/icons/save.png"
-              alt=""
-            />
-          </button>
-          <button class="btn" v-on:click="editingUnsave">
-            Отменить<img
-              class="right ico"
-              src="../../assets/icons/unsave.png"
               alt=""
             />
           </button>
@@ -42,8 +26,7 @@
             id="first_name_change"
             type="text"
             class="validate"
-            v-model="first_name"
-            v-bind:disabled="!editEnabled"
+            v-model="userUpdated.info.first_name"
           />
           <label for="first_name_change">Имя</label>
         </div>
@@ -52,8 +35,7 @@
             id="last_name_change"
             type="text"
             class="validate"
-            v-model="second_name"
-            v-bind:disabled="!editEnabled"
+            v-model="userUpdated.info.second_name"
           />
           <label for="last_name_change">Фамилия</label>
         </div>
@@ -62,8 +44,7 @@
             id="datepicker"
             type="text"
             class="datepicker"
-            v-model="dateOfBirth"
-            v-bind:disabled="!editEnabled"
+            v-model="userUpdated.info.dateOfBirth"
           />
           <label for="datepicker">Дата рождения</label>
         </div>
@@ -72,8 +53,7 @@
             id="location"
             type="text"
             class="validate"
-            v-model="location"
-            v-bind:disabled="!editEnabled"
+            v-model="userUpdated.info.location"
           />
           <label for="location">Локация</label>
         </div>
@@ -81,66 +61,64 @@
           <textarea
             id="about"
             class="materialize-textarea"
-            v-model="about"
-            v-bind:disabled="!editEnabled"
-          ></textarea>
+            v-model="userUpdated.info.about"
+          />
           <label for="about">Раскажите о себе</label>
         </div>
       </div>
       <div class="section-2">
         <div class="input-field center">
-          <select v-bind:disabled="!editEnabled">
+          <select v-model="userUpdated.work.tipe_of_work">
             <option value="" selected></option>
-            <option value="1">Полная занятость</option>
-            <option value="2">Частичная занятость</option>
-            <option value="3">Безработный</option>
+            <option value="Полная занятость">Полная занятость</option>
+            <option value="Частичная занятость">Частичная занятость</option>
+            <option value="Безработный">Безработный</option>
           </select>
           <label>Занятость</label>
         </div>
         <div class="input-field center">
-          <select v-bind:disabled="!editEnabled">
+          <select v-model="userUpdated.work.is_working">
             <option value="" selected></option>
-            <option value="1">Офисный Работник</option>
-            <option value="2">Фрилансер</option>
+            <option value="Офисный Работник">Офисный Работник</option>
+            <option value="Фрилансер">Фрилансер</option>
           </select>
           <label>Тип работы</label>
         </div>
         <div class="input-field center">
-          <select multiple v-bind:disabled="!editEnabled">
-            <option value="1">Разработчий</option>
-            <option value="2">Системный администратор</option>
-            <option value="3">Тестировщик</option>
-            <option value="1">Бизнес аналитик</option>
-            <option value="2">HR</option>
+          <select multiple v-model="userUpdated.work.position">
+            <option value="Разработчий">Разработчий</option>
+            <option value="Системный администратор"
+              >Системный администратор</option
+            >
+            <option value="Тестировщик">Тестировщик</option>
+            <option value="Бизнес аналитик">Бизнес аналитик</option>
+            <option value="HR">HR</option>
           </select>
           <label>Должность</label>
         </div>
         <div class="input-field center">
-          <select multiple v-bind:disabled="!editEnabled">
-            <option value="1">HTML+CSS</option>
-            <option value="1">JavaScript</option>
-            <option value="1">Java</option>
-            <option value="3">C</option>
-            <option value="3">C++</option>
-            <option value="">C#</option>
-            <option value="2">Python</option>
-            <option value="3">Ruby</option>
-            <option value="3">Kotlin</option>
-            <option value="2">Go</option>
-            <option value="3">SQL</option>
-            <option value="">Assembly</option>
-            <option value="1">Java</option>
-            <option value="2">Go</option>
-            <option value="3">Ruby</option>
+          <select multiple v-model="userUpdated.work.languages">
+            <option value="HTML+CSS">HTML+CSS</option>
+            <option value="JavaScript">JavaScript</option>
+            <option value="Java">Java</option>
+            <option value="C">C</option>
+            <option value="C++">C++</option>
+            <option value="C#">C#</option>
+            <option value="Python">Python</option>
+            <option value="Ruby">Ruby</option>
+            <option value="Kotlin">Kotlin</option>
+            <option value="Go">Go</option>
+            <option value="SQL">SQL</option>
+            <option value="Assembly">Assembly</option>
           </select>
           <label>Языки програмирования</label>
         </div>
         <div class="input-field center">
-          <select multiple v-bind:disabled="!editEnabled">
+          <select multiple v-model="userUpdated.work.technologies">
             <optgroup label="JavaScript">
-              <option value="1">Angular</option>
-              <option value="2">React</option>
-              <option value="2">Vue.js</option>
+              <option value="Angular">Angular</option>
+              <option value="React">React</option>
+              <option value="Vue.js">Vue.js</option>
             </optgroup>
           </select>
           <label>Технологии</label>
@@ -153,7 +131,7 @@
             type="number"
             class="validate"
             placeholder="+XXX-XX-XXX-XX-XX"
-            v-bind:disabled="!editEnabled"
+            v-model="userUpdated.contacts.phone"
           />
           <label for="tel">Ваш телефон</label>
         </div>
@@ -163,7 +141,7 @@
             type="url"
             class="validate"
             placeholder="https://www.example.com"
-            v-bind:disabled="!editEnabled"
+            v-model="userUpdated.contacts.site"
           />
           <label for="site">Ваш сайт визитка</label>
         </div>
@@ -173,7 +151,7 @@
             type="url"
             class="validate"
             placeholder="https://www.linkedin.com/in/user"
-            v-bind:disabled="!editEnabled"
+            v-model="userUpdated.contacts.linkedIn"
           />
           <label for="linkedin">Linked In</label>
         </div>
@@ -183,7 +161,7 @@
             type="url"
             class="validate"
             placeholder="https://www.facebook.com/user"
-            v-bind:disabled="!editEnabled"
+            v-model="userUpdated.contacts.facebook"
           />
           <label for="facebook">Facebook</label>
         </div>
@@ -193,7 +171,7 @@
             type="url"
             class="validate"
             placeholder="user@example.com"
-            v-bind:disabled="!editEnabled"
+            v-model="userUpdated.contacts.email"
           />
           <label for="email">E-mail</label>
         </div>
@@ -212,35 +190,55 @@ export default {
   data() {
     return {
       loading: false,
-      first_name: "Сергей",
-      second_name: "Гулий",
-      dateOfBirth: "11.12.2012",
-      location: "Uzhorod",
-      about: "Меня зовут сергей",
-      editEnabled: false
+      userUpdated: {
+        isAdmin: false,
+        info: {
+          first_name: "",
+          second_name: "",
+          dateOfBirth: "",
+          location: "",
+          about: ""
+        },
+        work: {
+          tipe_of_work: "",
+          is_working: "",
+          position: [],
+          languages: [],
+          technologies: []
+        },
+        contacts: {
+          phone: "",
+          site: "",
+          linkedIn: "",
+          facebook: "",
+          email: ""
+        }
+      }
     };
   },
-  mounted() {
+  computed: {
+    userOld() {
+      return this.$store.getters.user;
+    }
+  },
+  async mounted() {
+    M.updateTextFields();
+    M.Datepicker.init(document.querySelectorAll(".datepicker"), {
+      format: "dd.mm.yyyy"
+    });
+    M.FormSelect.init(document.querySelectorAll("select"));
     this.loading = true;
+    this.userUpdated = this.userOld;
+  },
+  updated() {
     M.updateTextFields();
     M.Datepicker.init(document.querySelectorAll(".datepicker"), {
       format: "dd.mm.yyyy"
     });
     M.FormSelect.init(document.querySelectorAll("select"));
   },
-  updated() {
-    M.FormSelect.init(document.querySelectorAll("select"));
-  },
   methods: {
-    editingStart() {
-      this.editEnabled = true;
-    },
-    editingSave() {
-      this.editEnabled = false;
-    },
-    editingUnsave() {
-      this.editEnabled = false;
-    }
+    editingSave() {}
   }
 };
 </script>

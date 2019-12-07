@@ -54,7 +54,7 @@ const index = new VueRouter({
       component: () => import("../views/user/User"),
       children: [
         {
-          path: "",
+          path: "profile",
           name: "profile",
           meta: { layout: "main-layout" },
           component: () => import("../views/user/UserProfile")

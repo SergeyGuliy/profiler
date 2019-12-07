@@ -7,7 +7,7 @@
     </header>
     <main>
       <article class="container">
-        <router-view></router-view>
+        <router-view />
       </article>
     </main>
     <Sidebar />
@@ -30,9 +30,9 @@ export default {
     ModalRegister,
     ModalLogin
   },
-  mounted() {
-    M.Modal.init(document.querySelectorAll("#modalLogin"));
-    M.Modal.init(document.querySelectorAll("#modalRegistration"));
+  async mounted() {
+    M.updateTextFields();
+    M.Modal.init(document.querySelectorAll(".modal"));
     M.Sidenav.init(document.querySelectorAll(".sidenav"), {
       inDuration: 50,
       outDuration: 50
@@ -41,7 +41,18 @@ export default {
       constrainWidth: true,
       coverTrigger: false
     });
+  },
+  async updated() {
     M.updateTextFields();
+    M.Modal.init(document.querySelectorAll(".modal"));
+    M.Sidenav.init(document.querySelectorAll(".sidenav"), {
+      inDuration: 50,
+      outDuration: 50
+    });
+    M.Dropdown.init(document.querySelectorAll(".dropdown-trigger"), {
+      constrainWidth: true,
+      coverTrigger: false
+    });
   }
 };
 </script>
