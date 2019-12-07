@@ -190,36 +190,8 @@ export default {
   data() {
     return {
       loading: false,
-      userUpdated: {
-        isAdmin: false,
-        info: {
-          first_name: "",
-          second_name: "",
-          dateOfBirth: "",
-          location: "",
-          about: ""
-        },
-        work: {
-          tipe_of_work: "",
-          is_working: "",
-          position: [],
-          languages: [],
-          technologies: []
-        },
-        contacts: {
-          phone: "",
-          site: "",
-          linkedIn: "",
-          facebook: "",
-          email: ""
-        }
-      }
+      userUpdated: {}
     };
-  },
-  computed: {
-    userOld() {
-      return this.$store.getters.user;
-    }
   },
   async mounted() {
     M.updateTextFields();
@@ -228,7 +200,31 @@ export default {
     });
     M.FormSelect.init(document.querySelectorAll("select"));
     this.loading = true;
-    this.userUpdated = this.userOld;
+    let userEmpty = {
+      info: {
+        first_name: "",
+        second_name: "",
+        dateOfBirth: "",
+        location: "",
+        about: ""
+      },
+      work: {
+        tipe_of_work: "",
+        is_working: "",
+        position: [],
+        languages: [],
+        technologies: []
+      },
+      contacts: {
+        phone: "",
+        site: "",
+        linkedIn: "",
+        facebook: "",
+        email: ""
+      }
+    };
+    let userOld = this.$store.getters.user;
+    this.userUpdated = this._.defaultsDeep(userOld, userEmpty);
   },
   updated() {
     M.updateTextFields();
@@ -238,7 +234,13 @@ export default {
     M.FormSelect.init(document.querySelectorAll("select"));
   },
   methods: {
-    editingSave() {}
+    async editingSave() {
+      try {
+        await this.$store.dispatch("updateUserInfo", this.userUpdated);
+      } catch (e) {
+        console.log("Failed to call updateUserInfo");
+      }
+    }
   }
 };
 </script>

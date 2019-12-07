@@ -37,6 +37,18 @@ export default {
       } catch (e) {
         console.log("User is not Logged In");
       }
+    },
+    async updateUserInfo({ dispatch, commit }, updateInfo) {
+      try {
+        const uid = await dispatch("getUid");
+        await firebase
+          .database()
+          .ref(`/users/${uid}/`)
+          .update(updateInfo);
+        commit("setUser", updateInfo);
+      } catch (e) {
+        console.log("Failed to update user info");
+      }
     }
   }
 };
