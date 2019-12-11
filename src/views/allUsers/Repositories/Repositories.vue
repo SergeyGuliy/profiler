@@ -27,10 +27,13 @@
             </thead>
 
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>Eclair</td>
-                <td>18</td>
+              <tr
+                v-for="repository in publicRepositories"
+                v-bind:key="repository.id"
+              >
+                <td>{{ repository.id }}</td>
+                <td>{{ repository.name }}</td>
+                <td>{{ repository.creator }}</td>
                 <td class="flex">
                   <button class="btn">
                     <img
@@ -58,10 +61,22 @@ export default {
   components: { Loader },
   data() {
     return {
-      loading: false
+      loading: false,
+      publicRepositories: []
     };
   },
-  mounted() {
+  async mounted() {
+    const allRepositories = await this.$store.dispatch("fetchAllRepositories");
+    const publicRepositoriesId = await this.$store.dispatch(
+      "fetchPublicRepositories"
+    );
+    let publicRepositories = [];
+    for (let f of publicRepositoriesId) {
+      let repository = allRepositories[f];
+      repository.id = f;
+      publicRepositories.push(repository);
+    }
+    this.publicRepositories = publicRepositories;
     this.loading = true;
   }
 };

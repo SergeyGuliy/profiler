@@ -21,16 +21,16 @@
               <tr>
                 <th>#</th>
                 <th>Название</th>
-                <th>Оценка</th>
+                <th>Создатель</th>
                 <th>Профиль</th>
               </tr>
             </thead>
 
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>Eclair</td>
-                <td>18</td>
+              <tr v-for="article in myArticles" v-bind:key="article.id">
+                <td>{{ article.id }}</td>
+                <td>{{ article.name }}</td>
+                <td>{{ article.creator }}</td>
                 <td class="flex">
                   <button class="btn">
                     <img src="../../assets/icons/showArticles.png" alt="" />
@@ -64,11 +64,25 @@ export default {
   components: { Loader },
   data() {
     return {
-      loading: false
+      loading: false,
+      myArticles: []
     };
   },
-  mounted() {
+  computed: {
+    myArticlesId() {
+      return this.$store.getters.user.lists.articles;
+    }
+  },
+  async mounted() {
     this.loading = true;
+    const allArticles = await this.$store.dispatch("fetchAllArticles");
+    let myArticles = [];
+    for (let f of this.myArticlesId) {
+      let article = allArticles[f];
+      article.id = f;
+      myArticles.push(article);
+    }
+    this.myArticles = myArticles;
   }
 };
 </script>

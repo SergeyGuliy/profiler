@@ -110,6 +110,9 @@ export default {
         accessibility: this.article.accessibility
       };
       await this.$store.dispatch("createRepository", repositoryData);
+      await this.$router.push(
+        `/${this.$store.getters.user.profile}/repositories`
+      );
     }
   }
 };

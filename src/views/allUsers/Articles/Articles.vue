@@ -27,20 +27,14 @@
             </thead>
 
             <tbody>
-              <tr v-for="arcticle in articles" :key="arcticle.id">
-                <td>{{ arcticle.id }}</td>
-                <td>{{ arcticle.name }}</td>
-                <td>{{ arcticle.rate }}</td>
+              <tr v-for="article in publicArticles" v-bind:key="article.id">
+                <td>{{ article.id }}</td>
+                <td>{{ article.name }}</td>
+                <td>{{ article.creator }}</td>
                 <td class="flex">
-                  <router-link
-                    class="btn"
-                    :to="{
-                      name: 'article',
-                      params: { article: arcticle.name }
-                    }"
-                  >
+                  <button class="btn del">
                     <img src="../../../assets/icons/showArticles.png" alt="" />
-                  </router-link>
+                  </button>
                   <button class="btn del">
                     <img src="../../../assets/icons/delete.png" alt="" />
                   </button>
@@ -63,29 +57,21 @@ export default {
   data() {
     return {
       loading: false,
-      articles: [
-        {
-          id: 1,
-          name: "sergey",
-          rate: 6,
-          link: "qwe"
-        },
-        {
-          id: 2,
-          name: "serg",
-          rate: 6,
-          link: "wQQQQw"
-        },
-        {
-          id: 3,
-          name: "gey",
-          rate: 6,
-          link: "we12231w"
-        }
-      ]
+      publicArticles: []
     };
   },
-  mounted() {
+  async mounted() {
+    const allArticles = await this.$store.dispatch("fetchAllArticles");
+    const publicArticlesId = await this.$store.dispatch(
+      "fetchArticlesArticles"
+    );
+    let publicArticles = [];
+    for (let f of publicArticlesId) {
+      let article = allArticles[f];
+      article.id = f;
+      publicArticles.push(article);
+    }
+    this.publicArticles = publicArticles;
     this.loading = true;
   }
 };

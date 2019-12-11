@@ -44,6 +44,25 @@ export default {
         .ref(`/systemData/articles/`)
         .set(articles);
     },
+    async fetchAllArticles() {
+      const allArticles = (
+        await firebase
+          .database()
+          .ref(`/articles/`)
+          .once("value")
+      ).val();
+      return allArticles;
+    },
+    async fetchArticlesArticles() {
+      const publicArticles =
+        (
+          await firebase
+            .database()
+            .ref(`/systemData/articles/`)
+            .once("value")
+        ).val() || [];
+      return publicArticles;
+    },
     deleteArticleFromPrivate() {}
   }
 };

@@ -110,6 +110,7 @@ export default {
         accessibility: this.article.accessibility
       };
       await this.$store.dispatch("createArticle", articleData);
+      await this.$router.push(`/${this.$store.getters.user.profile}/articles`);
     }
   }
 };

@@ -44,6 +44,25 @@ export default {
         .ref(`/systemData/repositories/`)
         .set(repositories);
     },
+    async fetchAllRepositories() {
+      const allRepositories = (
+        await firebase
+          .database()
+          .ref(`/repositories/`)
+          .once("value")
+      ).val();
+      return allRepositories;
+    },
+    async fetchPublicRepositories() {
+      const publicRepositories =
+        (
+          await firebase
+            .database()
+            .ref(`/systemData/repositories/`)
+            .once("value")
+        ).val() || [];
+      return publicRepositories;
+    },
     deleteRepositoryFromPrivate() {}
   }
 };
