@@ -72,10 +72,22 @@ const index = new VueRouter({
           component: () => import("../views/user/UserArticles")
         },
         {
-          path: "github",
-          name: "my-github",
+          path: "articles_create",
+          name: "articles_create",
           meta: { layout: "main-layout" },
-          component: () => import("../views/user/UserGitHub")
+          component: () => import("../views/user/UserArticlesCreate")
+        },
+        {
+          path: "repositories",
+          name: "my-repositories",
+          meta: { layout: "main-layout" },
+          component: () => import("../views/user/UserRepositories")
+        },
+        {
+          path: "repository_create",
+          name: "repository_create",
+          meta: { layout: "main-layout" },
+          component: () => import("../views/user/UserRepositoryCreate")
         },
         {
           path: "admin",

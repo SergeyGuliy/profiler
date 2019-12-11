@@ -200,31 +200,7 @@ export default {
     });
     M.FormSelect.init(document.querySelectorAll("select"));
     this.loading = true;
-    let userEmpty = {
-      info: {
-        first_name: "",
-        second_name: "",
-        dateOfBirth: "",
-        location: "",
-        about: ""
-      },
-      work: {
-        tipe_of_work: "",
-        is_working: "",
-        position: [],
-        languages: [],
-        technologies: []
-      },
-      contacts: {
-        phone: "",
-        site: "",
-        linkedIn: "",
-        facebook: "",
-        email: ""
-      }
-    };
-    let userOld = this.$store.getters.user;
-    this.userUpdated = this._.defaultsDeep(userOld, userEmpty);
+    this.userUpdated = this.$store.getters.user;
   },
   updated() {
     M.updateTextFields();

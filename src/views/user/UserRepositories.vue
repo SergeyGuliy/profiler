@@ -46,6 +46,14 @@
           </table>
         </div>
       </div>
+      <router-link
+        class="btn-floating btn-large waves-effect waves-light red"
+        :to="{
+          name: 'repository_create',
+          params: { user: $store.getters.user.profile }
+        }"
+        ><i class="material-icons">add</i></router-link
+      >
     </div>
     <Loader v-else />
   </div>
@@ -54,7 +62,7 @@
 <script>
 import Loader from "../../components/Loader";
 export default {
-  name: "UserGitHub",
+  name: "UserRepositories",
   components: { Loader },
   data() {
     return {

@@ -46,10 +46,10 @@
         <li>
           <router-link
             :to="{
-              name: 'my-github',
+              name: 'my-repositories',
               params: { user: $store.getters.user.profile }
             }"
-            >GitHub
+            >Репозитории
             <img class="right ico" src="../assets/icons/showGitHub.png" alt=""
           /></router-link>
         </li>
