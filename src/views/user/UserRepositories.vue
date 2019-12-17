@@ -79,7 +79,6 @@ export default {
     }
   },
   async mounted() {
-    this.loading = true;
     const allRepositories = await this.$store.dispatch("fetchAllRepositories");
     let myRepositories = [];
     for (let f of this.myRepositoriesId) {
@@ -88,6 +87,7 @@ export default {
       myRepositories.push(repository);
     }
     this.myRepositories = myRepositories;
+    this.loading = true;
   }
 };
 </script>

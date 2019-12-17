@@ -17,6 +17,7 @@ export default {
           .database()
           .ref(`/users/${uid}/`)
           .set({
+            id: uid,
             profile: email.split("@")[0],
             isAdmin: false
           });

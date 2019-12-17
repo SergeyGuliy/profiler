@@ -5,11 +5,13 @@ import loggedInUser from "./loggedInUser";
 import counters from "./counters";
 import articles from "./articles";
 import repositories from "./repositories";
+import users from "./users";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: {
+    users,
     authData,
     loggedInUser,
     counters,

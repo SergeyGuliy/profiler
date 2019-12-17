@@ -2,8 +2,7 @@ import defaultsDeep from "/mnt/d032024c-b3ba-4342-a367-51e8737d8935/IT/My_Projec
 import firebase from "firebase/app";
 export default {
   state: {
-    user: {},
-    isLoggedIn: false
+    user: {}
   },
   mutations: {
     setUser(state, userInfo) {
@@ -11,12 +10,6 @@ export default {
     },
     deleteUser(state) {
       state.user = {};
-    },
-    userLogIn(state) {
-      state.isLoggedIn = true;
-    },
-    userLogOut(state) {
-      state.isLoggedIn = false;
     },
     pushArticle(state, article) {
       let newState = state.user.lists.articles;
@@ -27,6 +20,17 @@ export default {
       let newState = state.user.lists.repositories;
       newState.push(repository);
       state.user.lists.repositories = newState;
+    },
+    pushFriend(state, user) {
+      let newState = state.user.lists.friends;
+      newState.push(user);
+      state.user.lists.friends = newState;
+    },
+    deleteFriend(state, user) {
+      let newState = state.user.lists.friends;
+      let idDToDelete = newState.findIndex(item => item === user);
+      newState.splice(idDToDelete, 1);
+      state.user.lists.friends = newState;
     }
   },
   getters: {
@@ -73,7 +77,6 @@ export default {
         };
         const user = defaultsDeep(userInfo, userBasic);
         commit("setUser", user);
-        commit("userLogIn");
       } catch (e) {
         console.log("User is not Logged In");
       }

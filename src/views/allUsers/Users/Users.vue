@@ -27,14 +27,26 @@
             </thead>
 
             <tbody>
-              <tr>
+              <tr v-for="user in users" v-bind:key="user.id">
                 <td>1</td>
-                <td>Eclair</td>
+                <td>{{ user.profile }}</td>
                 <td>18</td>
                 <td class="flex">
                   <button class="btn">
-                    <img src="../../../assets/icons/user.png" alt="" /></button
-                  ><button class="btn del">
+                    <img src="../../../assets/icons/user.png" alt="" />
+                  </button>
+                  <button
+                    class="btn del"
+                    v-if="!friendsList.includes(user.id) && userLoggedIn"
+                    v-on:click="addFriend(user.id)"
+                  >
+                    <img src="../../../assets/icons/addFriend.png" alt="" />
+                  </button>
+                  <button
+                    class="btn del"
+                    v-if="friendsList.includes(user.id) && userLoggedIn"
+                    v-on:click="deleteFriend(user.id)"
+                  >
                     <img src="../../../assets/icons/delete.png" alt="" />
                   </button>
                 </td>
@@ -55,11 +67,47 @@ export default {
   components: { Loader },
   data() {
     return {
-      loading: false
+      loading: false,
+      users: []
     };
   },
-  mounted() {
+  computed: {
+    friendsList() {
+      if (this.$store.getters.user.lists.friends) {
+        return this.$store.getters.user.lists.friends;
+      } else {
+        return [];
+      }
+    },
+    userLoggedIn() {
+      if (this.$store.getters.user.profile) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  },
+  async mounted() {
+    this.users = await this.$store.dispatch("fetchAllUsers");
     this.loading = true;
+  },
+  methods: {
+    async addFriend(userId) {
+      try {
+        await this.$store.commit("pushFriend", userId);
+        await this.$store.dispatch("updateFriendsList");
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async deleteFriend(userId) {
+      try {
+        await this.$store.commit("deleteFriend", userId);
+        await this.$store.dispatch("updateFriendsList");
+      } catch (e) {
+        console.log(e);
+      }
+    }
   }
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="this.$store.getters.isLoggedIn">
+    <div v-if="this.$store.getters.user.profile">
       <ul class="right">
         <li>
           <a class="dropdown-trigger" href="#" data-target="dropdown1"
@@ -109,7 +109,6 @@ export default {
   methods: {
     async logOut() {
       await this.$store.dispatch("logOut");
-      this.$store.commit("userLogOut");
     }
   },
   async mounted() {
