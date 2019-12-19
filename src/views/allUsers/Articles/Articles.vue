@@ -35,7 +35,18 @@
                   <button class="btn del">
                     <img src="../../../assets/icons/showArticles.png" alt="" />
                   </button>
-                  <button class="btn del">
+                  <button
+                    class="btn del"
+                    v-if="!myArticleList.includes(article.id) && userLoggedIn"
+                    v-on:click="addArticle(article.id)"
+                  >
+                    <img src="../../../assets/icons/addFriend.png" alt="" />
+                  </button>
+                  <button
+                    class="btn del"
+                    v-if="myArticleList.includes(article.id) && userLoggedIn"
+                    v-on:click="deleteArticle(article.id)"
+                  >
                     <img src="../../../assets/icons/delete.png" alt="" />
                   </button>
                 </td>
@@ -60,6 +71,22 @@ export default {
       publicArticles: []
     };
   },
+  computed: {
+    myArticleList() {
+      if (this.$store.getters.user.lists.articles) {
+        return this.$store.getters.user.lists.articles;
+      } else {
+        return [];
+      }
+    },
+    userLoggedIn() {
+      if (this.$store.getters.user.profile) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  },
   async mounted() {
     const allArticles = await this.$store.dispatch("fetchAllArticles");
     const publicArticlesId = await this.$store.dispatch(
@@ -73,6 +100,24 @@ export default {
     }
     this.publicArticles = publicArticles;
     this.loading = true;
+  },
+  methods: {
+    async addArticle(articleId) {
+      try {
+        await this.$store.commit("pushArticle", articleId);
+        await this.$store.dispatch("updateArticlesList");
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async deleteArticle(articleId) {
+      try {
+        await this.$store.commit("deleteMyArticle", articleId);
+        await this.$store.dispatch("updateArticlesList");
+      } catch (e) {
+        console.log(e);
+      }
+    }
   }
 };
 </script>

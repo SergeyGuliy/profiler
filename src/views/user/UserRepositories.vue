@@ -35,12 +35,13 @@
                 <td>{{ repository.name }}</td>
                 <td>{{ repository.creator }}</td>
                 <td class="flex">
-                  <button class="btn">
-                    <img
-                      src="../../assets/icons/showGitHub.png"
-                      alt=""
-                    /></button
-                  ><button class="btn del">
+                  <button
+                    class="btn del"
+                    v-if="
+                      myRepositoriesId.includes(repository.id) && userLoggedIn
+                    "
+                    v-on:click="deleteRepository(repository.id)"
+                  >
                     <img src="../../assets/icons/delete.png" alt="" />
                   </button>
                 </td>
@@ -76,9 +77,37 @@ export default {
   computed: {
     myRepositoriesId() {
       return this.$store.getters.user.lists.repositories;
+    },
+    userLoggedIn() {
+      if (this.$store.getters.user.profile) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  },
+  methods: {
+    async deleteRepository(userId) {
+      try {
+        await this.$store.commit("deleteMyRepository", userId);
+        await this.$store.dispatch("updateRepositoriesList");
+      } catch (e) {
+        console.log(e);
+      }
     }
   },
   async mounted() {
+    const allRepositories = await this.$store.dispatch("fetchAllRepositories");
+    let myRepositories = [];
+    for (let f of this.myRepositoriesId) {
+      let repository = allRepositories[f];
+      repository.id = f;
+      myRepositories.push(repository);
+    }
+    this.myRepositories = myRepositories;
+    this.loading = true;
+  },
+  async updated() {
     const allRepositories = await this.$store.dispatch("fetchAllRepositories");
     let myRepositories = [];
     for (let f of this.myRepositoriesId) {

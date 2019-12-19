@@ -35,12 +35,25 @@
                 <td>{{ repository.name }}</td>
                 <td>{{ repository.creator }}</td>
                 <td class="flex">
-                  <button class="btn">
-                    <img
-                      src="../../../assets/icons/showGitHub.png"
-                      alt=""
-                    /></button
-                  ><button class="btn del">
+                  <button class="btn del">
+                    <img src="../../../assets/icons/showArticles.png" alt="" />
+                  </button>
+                  <button
+                    class="btn del"
+                    v-if="
+                      !myRepositoryList.includes(repository.id) && userLoggedIn
+                    "
+                    v-on:click="addRepository(repository.id)"
+                  >
+                    <img src="../../../assets/icons/addFriend.png" alt="" />
+                  </button>
+                  <button
+                    class="btn del"
+                    v-if="
+                      myRepositoryList.includes(repository.id) && userLoggedIn
+                    "
+                    v-on:click="deleteRepository(repository.id)"
+                  >
                     <img src="../../../assets/icons/delete.png" alt="" />
                   </button>
                 </td>
@@ -65,6 +78,22 @@ export default {
       publicRepositories: []
     };
   },
+  computed: {
+    myRepositoryList() {
+      if (this.$store.getters.user.lists.repositories) {
+        return this.$store.getters.user.lists.repositories;
+      } else {
+        return [];
+      }
+    },
+    userLoggedIn() {
+      if (this.$store.getters.user.profile) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  },
   async mounted() {
     const allRepositories = await this.$store.dispatch("fetchAllRepositories");
     const publicRepositoriesId = await this.$store.dispatch(
@@ -78,6 +107,24 @@ export default {
     }
     this.publicRepositories = publicRepositories;
     this.loading = true;
+  },
+  methods: {
+    async addRepository(articleId) {
+      try {
+        await this.$store.commit("pushRepository", articleId);
+        await this.$store.dispatch("updateRepositoriesList");
+      } catch (e) {
+        console.log(e);
+      }
+    },
+    async deleteRepository(articleId) {
+      try {
+        await this.$store.commit("deleteMyRepository", articleId);
+        await this.$store.dispatch("updateRepositoriesList");
+      } catch (e) {
+        console.log(e);
+      }
+    }
   }
 };
 </script>

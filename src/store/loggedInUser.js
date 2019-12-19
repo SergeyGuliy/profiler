@@ -31,6 +31,18 @@ export default {
       let idDToDelete = newState.findIndex(item => item === user);
       newState.splice(idDToDelete, 1);
       state.user.lists.friends = newState;
+    },
+    deleteMyArticle(state, article) {
+      let newState = state.user.lists.articles;
+      let idDToDelete = newState.findIndex(item => item === article);
+      newState.splice(idDToDelete, 1);
+      state.user.lists.articles = newState;
+    },
+    deleteMyRepository(state, repository) {
+      let newState = state.user.lists.repositories;
+      let idDToDelete = newState.findIndex(item => item === repository);
+      newState.splice(idDToDelete, 1);
+      state.user.lists.repositories = newState;
     }
   },
   getters: {

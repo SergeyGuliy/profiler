@@ -63,6 +63,16 @@ export default {
         ).val() || [];
       return publicRepositories;
     },
-    deleteRepositoryFromPrivate() {}
+    async updateRepositoriesList({ dispatch, getters }) {
+      try {
+        const uid = await dispatch("getUid");
+        await firebase
+          .database()
+          .ref(`/users/${uid}/lists/repositories`)
+          .set(getters.user.lists.repositories);
+      } catch (e) {
+        console.log(e);
+      }
+    }
   }
 };

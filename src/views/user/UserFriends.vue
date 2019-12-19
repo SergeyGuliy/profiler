@@ -83,7 +83,6 @@ export default {
       try {
         await this.$store.commit("deleteFriend", userId);
         await this.$store.dispatch("updateFriendsList");
-        this.$router.reload();
       } catch (e) {
         console.log(e);
       }

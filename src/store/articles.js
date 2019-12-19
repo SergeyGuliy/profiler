@@ -63,6 +63,16 @@ export default {
         ).val() || [];
       return publicArticles;
     },
-    deleteArticleFromPrivate() {}
+    async updateArticlesList({ dispatch, getters }) {
+      try {
+        const uid = await dispatch("getUid");
+        await firebase
+          .database()
+          .ref(`/users/${uid}/lists/articles`)
+          .set(getters.user.lists.articles);
+      } catch (e) {
+        console.log(e);
+      }
+    }
   }
 };

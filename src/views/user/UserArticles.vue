@@ -16,7 +16,13 @@
       </div>
       <div class="section-1">
         <div class="input-field center">
-          <table class="highlight centered table">
+          <div v-if="myArticlesId.length === 0">
+            <p class="center">У вас нет статей</p>
+            <router-link class="btn center" to="/articles"
+              >Посмотреть список всех статей</router-link
+            >
+          </div>
+          <table v-else class="highlight centered table">
             <thead>
               <tr>
                 <th>#</th>
@@ -32,10 +38,11 @@
                 <td>{{ article.name }}</td>
                 <td>{{ article.creator }}</td>
                 <td class="flex">
-                  <button class="btn">
-                    <img src="../../assets/icons/showArticles.png" alt="" />
-                  </button>
-                  <button class="btn del">
+                  <button
+                    class="btn del"
+                    v-if="myArticlesId.includes(article.id) && userLoggedIn"
+                    v-on:click="deleteArticle(article.id)"
+                  >
                     <img src="../../assets/icons/delete.png" alt="" />
                   </button>
                 </td>
@@ -71,10 +78,26 @@ export default {
   computed: {
     myArticlesId() {
       return this.$store.getters.user.lists.articles;
+    },
+    userLoggedIn() {
+      if (this.$store.getters.user.profile) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  },
+  methods: {
+    async deleteArticle(userId) {
+      try {
+        await this.$store.commit("deleteMyArticle", userId);
+        await this.$store.dispatch("updateArticlesList");
+      } catch (e) {
+        console.log(e);
+      }
     }
   },
   async mounted() {
-    this.loading = true;
     const allArticles = await this.$store.dispatch("fetchAllArticles");
     let myArticles = [];
     for (let f of this.myArticlesId) {
@@ -83,6 +106,18 @@ export default {
       myArticles.push(article);
     }
     this.myArticles = myArticles;
+    this.loading = true;
+  },
+  async updated() {
+    const allArticles = await this.$store.dispatch("fetchAllArticles");
+    let myArticles = [];
+    for (let f of this.myArticlesId) {
+      let article = allArticles[f];
+      article.id = f;
+      myArticles.push(article);
+    }
+    this.myArticles = myArticles;
+    this.loading = true;
   }
 };
 </script>
