@@ -1,65 +1,92 @@
 <template>
   <div>
-    <div class="grid" v-if="loading">
-      <div class="header">
-        <span class="badge">GitHub репозитории</span>
-        <div>
-          <input type="text" class="validate" />
-          <button class="btn">
-            Поиск<img
-              class="right ico"
-              src="../../../assets/icons/search.png"
-              alt=""
-            />
-          </button>
+    <div v-if="loading">
+      <div class="grid" v-if="publicRepositories.length === 0">
+        <div class="header">
+          <span class="badge">В системе нет репозиториев</span>
+          <div>
+            <router-link
+              v-if="userLoggedIn"
+              class="btn"
+              :to="{
+                name: 'repository_create',
+                params: { user: $store.getters.user.profile }
+              }"
+              >Создать</router-link
+            >
+          </div>
         </div>
       </div>
-      <div class="section-1">
-        <div class="input-field center">
-          <table class="highlight centered table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Название</th>
-                <th>Оценка</th>
-                <th>Профиль</th>
-              </tr>
-            </thead>
+      <div v-else class="grid">
+        <div class="grid" v-if="publicRepositories.length === 0">
+          <div class="header">
+            <span class="badge">В системе нет пользователей</span>
+          </div>
+        </div>
+        <div class="header">
+          <span class="badge">GitHub репозитории</span>
+          <div>
+            <input type="text" class="validate input" />
+            <button class="btn">
+              Поиск<img
+                class="right ico"
+                src="../../../assets/icons/search.png"
+                alt=""
+              />
+            </button>
+          </div>
+        </div>
+        <div class="section-1">
+          <div class="input-field center">
+            <table class="highlight centered table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Название</th>
+                  <th>Оценка</th>
+                  <th>Профиль</th>
+                </tr>
+              </thead>
 
-            <tbody>
-              <tr
-                v-for="repository in publicRepositories"
-                v-bind:key="repository.id"
-              >
-                <td>{{ repository.id }}</td>
-                <td>{{ repository.name }}</td>
-                <td>{{ repository.creator }}</td>
-                <td class="flex">
-                  <button class="btn del">
-                    <img src="../../../assets/icons/showArticles.png" alt="" />
-                  </button>
-                  <button
-                    class="btn del"
-                    v-if="
-                      !myRepositoryList.includes(repository.id) && userLoggedIn
-                    "
-                    v-on:click="addRepository(repository.id)"
-                  >
-                    <img src="../../../assets/icons/addFriend.png" alt="" />
-                  </button>
-                  <button
-                    class="btn del"
-                    v-if="
-                      myRepositoryList.includes(repository.id) && userLoggedIn
-                    "
-                    v-on:click="deleteRepository(repository.id)"
-                  >
-                    <img src="../../../assets/icons/delete.png" alt="" />
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+              <tbody>
+                <tr
+                  v-for="repository in publicRepositories"
+                  v-bind:key="repository.id"
+                >
+                  <td>{{ repository.id }}</td>
+                  <td>{{ repository.name }}</td>
+                  <td>{{ repository.creator }}</td>
+                  <td class="flex">
+                    <button class="btn del">
+                      <img
+                        src="../../../assets/icons/showArticles.png"
+                        alt=""
+                      />
+                    </button>
+                    <button
+                      class="btn del"
+                      v-if="
+                        !myRepositoryList.includes(repository.id) &&
+                          userLoggedIn
+                      "
+                      v-on:click="addRepository(repository.id)"
+                    >
+                      <img src="../../../assets/icons/addFriend.png" alt="" />
+                    </button>
+                    <button
+                      class="btn del"
+                      v-if="
+                        myRepositoryList.includes(repository.id) && userLoggedIn
+                      "
+                      v-on:click="deleteRepository(repository.id)"
+                    >
+                      <img src="../../../assets/icons/delete.png" alt="" />
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>
@@ -95,10 +122,24 @@ export default {
     }
   },
   async mounted() {
-    const allRepositories = await this.$store.dispatch("fetchAllRepositories");
-    const publicRepositoriesId = await this.$store.dispatch(
-      "fetchPublicRepositories"
-    );
+    const allRepositories =
+      (await this.$store.dispatch("fetchAllRepositories")) || [];
+    const publicRepositoriesId =
+      (await this.$store.dispatch("fetchPublicRepositories")) || [];
+    let publicRepositories = [];
+    for (let f of publicRepositoriesId) {
+      let repository = allRepositories[f];
+      repository.id = f;
+      publicRepositories.push(repository);
+    }
+    this.publicRepositories = publicRepositories;
+    this.loading = true;
+  },
+  async updated() {
+    const allRepositories =
+      (await this.$store.dispatch("fetchAllRepositories")) || [];
+    const publicRepositoriesId =
+      (await this.$store.dispatch("fetchPublicRepositories")) || [];
     let publicRepositories = [];
     for (let f of publicRepositoriesId) {
       let repository = allRepositories[f];

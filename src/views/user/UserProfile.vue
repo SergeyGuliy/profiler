@@ -4,7 +4,11 @@
       <div class="header">
         <span class="badge">Профиль</span>
         <div>
-          <button class="btn" v-if="!this.$store.getters.user.isAdmin">
+          <button
+            class="btn"
+            v-if="!this.$store.getters.user.isAdmin"
+            v-on:click="becomeAdmin"
+          >
             Стать Админом<img
               class="right ico"
               src="../../assets/icons/adminBase.png"
@@ -216,6 +220,9 @@ export default {
       } catch (e) {
         console.log("Failed to call updateUserInfo");
       }
+    },
+    async becomeAdmin() {
+      await this.$store.dispatch("becomeAdmin");
     }
   }
 };

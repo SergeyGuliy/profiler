@@ -1,64 +1,86 @@
 <template>
   <div>
-    <div class="grid" v-if="loading">
-      <div class="header">
-        <span class="badge">Мои статьи</span>
-        <div>
-          <input id="search" type="text" class="validate" />
-          <button class="btn">
-            Поиск<img
-              class="right ico"
-              src="../../assets/icons/search.png"
-              alt=""
-            />
-          </button>
-        </div>
-      </div>
-      <div class="section-1">
-        <div class="input-field center">
-          <div v-if="myArticlesId.length === 0">
-            <p class="center">У вас нет статей</p>
-            <router-link class="btn center" to="/articles"
-              >Посмотреть список всех статей</router-link
+    <div v-if="loading">
+      <div class="grid" v-if="myArticles.length === 0">
+        <div class="header">
+          <span class="badge">У вас нет статей</span>
+          <div>
+            <router-link v-if="userLoggedIn" class="btn" to="/articles"
+              >Все Статьи</router-link
+            >
+            <router-link
+              v-if="userLoggedIn"
+              class="btn"
+              :to="{
+                name: 'articles_create',
+                params: { user: $store.getters.user.profile }
+              }"
+              >Создать</router-link
             >
           </div>
-          <table v-else class="highlight centered table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Название</th>
-                <th>Создатель</th>
-                <th>Профиль</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <tr v-for="article in myArticles" v-bind:key="article.id">
-                <td>{{ article.id }}</td>
-                <td>{{ article.name }}</td>
-                <td>{{ article.creator }}</td>
-                <td class="flex">
-                  <button
-                    class="btn del"
-                    v-if="myArticlesId.includes(article.id) && userLoggedIn"
-                    v-on:click="deleteArticle(article.id)"
-                  >
-                    <img src="../../assets/icons/delete.png" alt="" />
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
         </div>
       </div>
-      <router-link
-        class="btn-floating btn-large waves-effect waves-light red"
-        :to="{
-          name: 'articles_create',
-          params: { user: $store.getters.user.profile }
-        }"
-        ><i class="material-icons">add</i></router-link
-      >
+
+      <div v-else class="grid">
+        <div class="header">
+          <span class="badge">Мои статьи</span>
+          <div>
+            <input id="search" type="text" class="validate input" />
+            <button class="btn">
+              Поиск<img
+                class="right ico"
+                src="../../assets/icons/search.png"
+                alt=""
+              />
+            </button>
+          </div>
+        </div>
+        <div class="section-1">
+          <div class="input-field center">
+            <div v-if="myArticlesId.length === 0">
+              <p class="center">У вас нет статей</p>
+              <router-link class="btn center" to="/articles"
+                >Посмотреть список всех статей</router-link
+              >
+            </div>
+            <table v-else class="highlight centered table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Название</th>
+                  <th>Создатель</th>
+                  <th>Профиль</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr v-for="article in myArticles" v-bind:key="article.id">
+                  <td>{{ article.id }}</td>
+                  <td>{{ article.name }}</td>
+                  <td>{{ article.creator }}</td>
+                  <td class="flex">
+                    <button
+                      class="btn del"
+                      v-if="myArticlesId.includes(article.id) && userLoggedIn"
+                      v-on:click="deleteArticle(article.id)"
+                    >
+                      <img src="../../assets/icons/delete.png" alt="" />
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <router-link
+          class="btn-floating btn-large waves-effect waves-light red"
+          :to="{
+            name: 'articles_create',
+            params: { user: $store.getters.user.profile }
+          }"
+          ><i class="material-icons">add</i></router-link
+        >
+      </div>
     </div>
     <Loader v-else />
   </div>

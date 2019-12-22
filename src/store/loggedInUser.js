@@ -8,8 +8,17 @@ export default {
     setUser(state, userInfo) {
       state.user = userInfo;
     },
+    becomeAdmin(state) {
+      state.user.isAdmin = true;
+    },
     deleteUser(state) {
-      state.user = {};
+      state.user = {
+        lists: {
+          friends: [],
+          articles: [],
+          repositories: []
+        }
+      };
     },
     pushArticle(state, article) {
       let newState = state.user.lists.articles;
@@ -103,6 +112,18 @@ export default {
           .update(getters.user);
       } catch (e) {
         console.log("Failed to update user info");
+      }
+    },
+    async becomeAdmin({ dispatch, commit, getters }) {
+      try {
+        commit("becomeAdmin");
+        const uid = await dispatch("getUid");
+        await firebase
+          .database()
+          .ref(`/users/${uid}/isAdmin`)
+          .set(getters.user.isAdmin);
+      } catch (e) {
+        console.log(e);
       }
     }
   }

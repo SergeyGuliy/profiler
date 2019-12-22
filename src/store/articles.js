@@ -53,7 +53,7 @@ export default {
       ).val();
       return allArticles;
     },
-    async fetchArticlesArticles() {
+    async fetchPublicArticles() {
       const publicArticles =
         (
           await firebase
