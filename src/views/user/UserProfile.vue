@@ -4,17 +4,17 @@
       <div class="header">
         <span class="badge">Профиль</span>
         <div>
-          <button
-            class="btn"
+          <a
+            href="#modalBecomeAdmin"
+            class="modal-trigger btn"
             v-if="!this.$store.getters.user.isAdmin"
-            v-on:click="becomeAdmin"
           >
             Стать Админом<img
               class="right ico"
               src="../../assets/icons/adminBase.png"
               alt=""
             />
-          </button>
+          </a>
           <button class="btn" v-on:click="editingSave">
             Сохранить<img
               class="right ico"
@@ -102,27 +102,28 @@
         </div>
         <div class="input-field center">
           <select multiple v-model="userUpdated.work.languages">
-            <option value="HTML+CSS">HTML+CSS</option>
-            <option value="JavaScript">JavaScript</option>
-            <option value="Java">Java</option>
-            <option value="C">C</option>
-            <option value="C++">C++</option>
-            <option value="C#">C#</option>
-            <option value="Python">Python</option>
-            <option value="Ruby">Ruby</option>
-            <option value="Kotlin">Kotlin</option>
-            <option value="Go">Go</option>
-            <option value="SQL">SQL</option>
-            <option value="Assembly">Assembly</option>
+            <option
+              v-for="language in programingLanguages"
+              v-bind:key="language.name"
+              v-bind:value="language.name"
+              >{{ language.name }}</option
+            >
           </select>
           <label>Языки програмирования</label>
         </div>
         <div class="input-field center">
           <select multiple v-model="userUpdated.work.technologies">
-            <optgroup label="JavaScript">
-              <option value="Angular">Angular</option>
-              <option value="React">React</option>
-              <option value="Vue.js">Vue.js</option>
+            <optgroup
+              v-for="language in programingLanguages"
+              v-bind:key="language.name"
+              v-bind:label="language.name"
+            >
+              <option
+                v-for="technology in language.technologies"
+                v-bind:key="technology"
+                v-bind:value="technology"
+                >{{ technology }}</option
+              >
             </optgroup>
           </select>
           <label>Технологии</label>
@@ -194,10 +195,12 @@ export default {
   data() {
     return {
       loading: false,
-      userUpdated: {}
+      userUpdated: {},
+      programingLanguages: ""
     };
   },
   async mounted() {
+    this.programingLanguages = await this.$store.dispatch("fetchCategories");
     M.updateTextFields();
     M.Datepicker.init(document.querySelectorAll(".datepicker"), {
       format: "dd.mm.yyyy"
@@ -220,9 +223,6 @@ export default {
       } catch (e) {
         console.log("Failed to call updateUserInfo");
       }
-    },
-    async becomeAdmin() {
-      await this.$store.dispatch("becomeAdmin");
     }
   }
 };

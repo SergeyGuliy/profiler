@@ -6,6 +6,7 @@ import counters from "./counters";
 import articles from "./articles";
 import repositories from "./repositories";
 import users from "./users";
+import admin from "./admin";
 
 Vue.use(Vuex);
 
@@ -16,6 +17,7 @@ export default new Vuex.Store({
     loggedInUser,
     counters,
     articles,
-    repositories
+    repositories,
+    admin
   }
 });

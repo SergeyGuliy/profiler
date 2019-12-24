@@ -13,10 +13,12 @@
     <Sidebar />
     <ModalLogin />
     <ModalRegister />
+    <ModalBecomeAdmin />
   </div>
 </template>
 
 <script>
+import ModalBecomeAdmin from "../components/ModalBecomeAdmin";
 import M from "materialize-css/dist/js/materialize.min";
 import Navbar from "../components/Navbar";
 import Sidebar from "../components/Sidebar";
@@ -28,7 +30,8 @@ export default {
     Navbar,
     Sidebar,
     ModalRegister,
-    ModalLogin
+    ModalLogin,
+    ModalBecomeAdmin
   },
   async mounted() {
     M.updateTextFields();
