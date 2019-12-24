@@ -123,7 +123,7 @@ export default {
       ) {
         this.programingLanguages[
           this.programingLanguageSelected
-        ].technologies = [];
+        ].technologies = [this.technology];
       }
       this.programingLanguages[
         this.programingLanguageSelected
