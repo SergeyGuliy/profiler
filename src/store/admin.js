@@ -10,13 +10,10 @@ export default {
             .ref(`/systemData/categories/`)
             .once("value")
         ).val() || {};
-      console.log(categories);
       return categories;
     },
     async updateCategories({ getters }, categories) {
       try {
-        console.log(getters.user);
-        console.log(categories);
         await firebase
           .database()
           .ref(`/systemData/categories/`)
