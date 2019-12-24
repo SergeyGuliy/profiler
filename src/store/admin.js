@@ -14,6 +14,7 @@ export default {
     },
     async updateCategories({ getters }, categories) {
       try {
+        console.log(getters.user);
         await firebase
           .database()
           .ref(`/systemData/categories/`)
