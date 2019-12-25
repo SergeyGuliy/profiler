@@ -3,15 +3,6 @@
     <div class="grid" v-if="loading">
       <div class="header">
         <span class="badge">Админка</span>
-        <div>
-          <button class="btn" v-on:click="saveHandler">
-            Сохранить<img
-              class="right ico"
-              src="../../assets/icons/save.png"
-              alt=""
-            />
-          </button>
-        </div>
       </div>
       <div class="section-1">
         <div class="row">
@@ -34,9 +25,12 @@
           >
             <div>
               {{ language.name
-              }}<a href="#!" class="secondary-content"
-                ><i class="material-icons">send</i></a
+              }}<button
+                class="btn secondary-content"
+                v-on:click="deleteLanguage(language.name)"
               >
+                Удалить
+              </button>
             </div>
           </li>
         </ul>
@@ -70,13 +64,15 @@
         <ul class="collection">
           <li
             class="collection-item"
-            v-for="technology in technologies"
-            v-bind:key="technology.name"
+            v-for="technology in languageTechnologies"
+            v-bind:key="technology"
           >
             <div>
               {{ technology
               }}<a href="#!" class="secondary-content"
-                ><i class="material-icons">send</i></a
+                ><button class="btn" v-on:click="deleteTechnology(technology)">
+                  <i class="material-icons">send</i>
+                </button></a
               >
             </div>
           </li>
@@ -99,24 +95,46 @@ export default {
       programingLanguages: "",
       programingLanguageSelected: "",
       programingLanguage: "",
-      technologies: "",
       technology: ""
     };
   },
-  watch: {
-    programingLanguageSelected(language) {
-      this.technologies = this.programingLanguages[language].technologies || [];
+  computed: {
+    languageTechnologies() {
+      if (
+        this.programingLanguageSelected ||
+        this.programingLanguages[this.programingLanguageSelected]
+      ) {
+        if (
+          this.programingLanguages[this.programingLanguageSelected].technologies
+        ) {
+          return this.programingLanguages[this.programingLanguageSelected]
+            .technologies;
+        } else {
+          return [];
+        }
+      } else {
+        return [];
+      }
     }
   },
   methods: {
-    addLanguage() {
+    async addLanguage() {
       this.programingLanguages[this.programingLanguage] = {
         name: this.programingLanguage,
         technologies: []
       };
       this.programingLanguage = "";
+      await this.$store.dispatch("updateCategories", this.programingLanguages);
     },
-    addTechnology() {
+    async deleteLanguage(language) {
+      if (this.programingLanguageSelected === language) {
+        this.programingLanguageSelected = "";
+      }
+      this.programingLanguages = await this.$store.dispatch("fetchCategories");
+      delete this.programingLanguages[language];
+      await this.$store.dispatch("updateCategories", this.programingLanguages);
+    },
+    async addTechnology() {
       if (
         this.programingLanguages[this.programingLanguageSelected]
           .technologies === undefined
@@ -124,21 +142,25 @@ export default {
         this.programingLanguages[
           this.programingLanguageSelected
         ].technologies = [this.technology];
+      } else {
+        this.programingLanguages[
+          this.programingLanguageSelected
+        ].technologies.push(this.technology);
       }
+      this.technology = "";
+      await this.$store.dispatch("updateCategories", this.programingLanguages);
+    },
+    async deleteTechnology(technology) {
+      this.programingLanguages = await this.$store.dispatch("fetchCategories");
+      let technologyIndex = this.programingLanguages[
+        this.programingLanguageSelected
+      ].technologies.findIndex(function(index) {
+        return index === technology;
+      });
       this.programingLanguages[
         this.programingLanguageSelected
-      ].technologies.push(this.technology);
-      this.technology = "";
-    },
-    async saveHandler() {
-      try {
-        await this.$store.dispatch(
-          "updateCategories",
-          this.programingLanguages
-        );
-      } catch (e) {
-        console.log(e);
-      }
+      ].technologies.splice(technologyIndex, 1);
+      await this.$store.dispatch("updateCategories", this.programingLanguages);
     }
   },
   async mounted() {
@@ -146,7 +168,7 @@ export default {
     M.FormSelect.init(document.querySelectorAll("select"));
     this.loading = true;
   },
-  updated() {
+  async updated() {
     M.FormSelect.init(document.querySelectorAll("select"));
   }
 };
@@ -158,10 +180,13 @@ export default {
   grid-template-areas: 'head head head head head head' 'sec1 sec1 sec1 sec2 sec2 sec2' 'sec1 sec1 sec1 sec2 sec2 sec2' 'sec1 sec1 sec1 sec2 sec2 sec2'
   @media screen and (max-width: 900px)
     grid-template-areas: 'head head head head head head' 'sec1 sec1 sec1 sec2 sec2 sec2' 'sec1 sec1 sec1 sec2 sec2 sec2'
-    grid-template-rows: 72px 1fr 1fr
   @media screen and (max-width: 600px)
-    grid-template-areas: 'head head head head head head' 'sec1 sec1 sec1 sec2 sec2 sec2' 'sec1 sec1 sec1 sec2 sec2 sec2'
+    grid-template-areas: 'head head head head head head' 'sec1 sec1 sec1 sec1 sec1 sec1' 'sec2 sec2 sec2 sec2 sec2 sec2'
 
 .center
   min-height: 51px !important
+li div
+  height: 30px
+  button
+    height: 30px
 </style>

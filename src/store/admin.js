@@ -14,11 +14,11 @@ export default {
     },
     async updateCategories({ getters }, categories) {
       try {
-        console.log(getters.user);
+        getters;
         await firebase
           .database()
           .ref(`/systemData/categories/`)
-          .update(categories);
+          .set(categories);
       } catch (e) {
         console.log("Failed to update user info");
       }
