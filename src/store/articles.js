@@ -12,7 +12,9 @@ export default {
           about: articleData.about,
           cite: articleData.cite,
           repository: articleData.repository,
-          accessibility: articleData.accessibility
+          accessibility: articleData.accessibility,
+          languages: articleData.languages,
+          technologies: articleData.technologies
         });
       await dispatch("makeArticlePrivate", articleData);
       if (articleData.accessibility === "public") {

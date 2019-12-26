@@ -5,10 +5,33 @@
         <span class="badge">Создать статью</span>
         <div>
           <div class="input-field input">
+            <select v-model="article.languages">
+              <option
+                v-for="language in programingLanguages"
+                v-bind:key="language.name"
+                v-bind:value="language.name"
+                >{{ language.name }}</option
+              >
+            </select>
+            <label>Языки програмирования</label>
+          </div>
+          <div class="input-field input">
+            <select v-model="article.technologies">
+              <option
+                v-for="technology in technologySelected"
+                v-bind:key="technology"
+                v-bind:value="technology"
+                >{{ technology }}</option
+              >
+            </select>
+            <label>Технологии</label>
+          </div>
+          <div class="input-field input">
             <select v-model="article.accessibility">
               <option value="private" selected>Приватный</option>
               <option value="public">Публичный</option>
             </select>
+            <label>Доступность</label>
           </div>
           <button class="btn" v-on:click="fff">
             Сохранить<img
@@ -76,8 +99,11 @@ export default {
   data() {
     return {
       loading: false,
+      programingLanguages: "",
       article: {
         name: "",
+        languages: "",
+        technologies: "",
         about: "",
         cite: "",
         repository: "",
@@ -85,7 +111,17 @@ export default {
       }
     };
   },
+  computed: {
+    technologySelected() {
+      if (this.article.languages) {
+        return this.programingLanguages[this.article.languages].technologies;
+      } else {
+        return [];
+      }
+    }
+  },
   async mounted() {
+    this.programingLanguages = await this.$store.dispatch("fetchCategories");
     M.updateTextFields();
     M.FormSelect.init(document.querySelectorAll("select"));
     this.loading = true;
@@ -107,7 +143,9 @@ export default {
         repository: this.article.repository.split("https://github.com/")[
           this.article.repository.split("https://github.com/").length - 1
         ],
-        accessibility: this.article.accessibility
+        accessibility: this.article.accessibility,
+        languages: this.article.languages,
+        technologies: this.article.technologies
       };
       await this.$store.dispatch("createArticle", articleData);
       await this.$router.push(`/${this.$store.getters.user.profile}/articles`);

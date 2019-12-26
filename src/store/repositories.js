@@ -12,7 +12,9 @@ export default {
           about: repositoryData.about,
           cite: repositoryData.cite,
           repository: repositoryData.repository,
-          accessibility: repositoryData.accessibility
+          accessibility: repositoryData.accessibility,
+          languages: repositoryData.languages,
+          technologies: repositoryData.technologies
         });
       await dispatch("makeRepositoryPrivate", repositoryData);
       if (repositoryData.accessibility === "public") {
