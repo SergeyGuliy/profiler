@@ -19,6 +19,14 @@
             >
           </div>
         </div>
+        <router-link
+          class="btn-floating btn-large waves-effect waves-light red"
+          :to="{
+            name: 'articles_create',
+            params: { user: $store.getters.user.profile }
+          }"
+          ><i class="material-icons">add</i></router-link
+        >
       </div>
 
       <div v-else class="grid">

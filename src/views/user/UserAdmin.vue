@@ -69,11 +69,12 @@
           >
             <div>
               {{ technology
-              }}<a href="#!" class="secondary-content"
-                ><button class="btn" v-on:click="deleteTechnology(technology)">
-                  <i class="material-icons">send</i>
-                </button></a
+              }}<button
+                class="btn secondary-content"
+                v-on:click="deleteTechnology(technology)"
               >
+                Удалить
+              </button>
             </div>
           </li>
         </ul>
