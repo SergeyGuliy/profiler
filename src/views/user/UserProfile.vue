@@ -48,7 +48,7 @@
             id="datepicker"
             type="text"
             class="datepicker"
-            v-model="userUpdated.info.dateOfBirth"
+            v-model.lazy="userUpdated.info.dateOfBirth"
           />
           <label for="datepicker">Дата рождения</label>
         </div>
@@ -155,7 +155,7 @@
             id="linkedin"
             type="url"
             class="validate"
-            placeholder="https://www.linkedin.com/in/user"
+            placeholder="https://www.linkedin.com/in/UserName"
             v-model="userUpdated.contacts.linkedIn"
           />
           <label for="linkedin">Linked In</label>
@@ -165,7 +165,7 @@
             id="facebook"
             type="url"
             class="validate"
-            placeholder="https://www.facebook.com/user"
+            placeholder="https://www.facebook.com/UserName"
             v-model="userUpdated.contacts.facebook"
           />
           <label for="facebook">Facebook</label>
@@ -175,10 +175,20 @@
             id="email"
             type="url"
             class="validate"
-            placeholder="user@example.com"
+            placeholder="UserName@example.com"
             v-model="userUpdated.contacts.email"
           />
           <label for="email">E-mail</label>
+        </div>
+        <div class="input-field center">
+          <input
+            id="github"
+            type="url"
+            class="validate"
+            placeholder="https://github.com/UserName"
+            v-model="userUpdated.contacts.github"
+          />
+          <label for="email">GitHub profile</label>
         </div>
       </div>
     </div>
@@ -206,8 +216,8 @@ export default {
       format: "dd.mm.yyyy"
     });
     M.FormSelect.init(document.querySelectorAll("select"));
-    this.loading = true;
     this.userUpdated = this.$store.getters.user;
+    this.loading = true;
   },
   updated() {
     M.updateTextFields();
@@ -219,6 +229,7 @@ export default {
   methods: {
     async editingSave() {
       try {
+        console.log(this.userUpdated);
         await this.$store.dispatch("updateUserInfo", this.userUpdated);
       } catch (e) {
         console.log("Failed to call updateUserInfo");
@@ -232,10 +243,10 @@ export default {
 .grid
   grid-template-rows: 72px 1fr 1fr 1fr
   grid-template-areas: 'head head head head head head' 'sec1 sec1 sec2 sec2 sec3 sec3' 'sec1 sec1 sec2 sec2 sec3 sec3' 'sec1 sec1 sec2 sec2 sec3 sec3'
-  @media screen and (max-width: 900px)
+  @media screen and (max-width: 1150px)
     grid-template-areas: 'head head head head head head' 'sec1 sec1 sec1 sec3 sec3 sec3' 'sec2 sec2 sec2 sec2 sec2 sec2'
     grid-template-rows: 72px 1fr 1fr
-  @media screen and (max-width: 600px)
+  @media screen and (max-width: 740px)
     grid-template-areas: 'head head head head head head' 'sec1 sec1 sec1 sec1 sec1 sec1' 'sec2 sec2 sec2 sec2 sec2 sec2' 'sec3 sec3 sec3 sec3 sec3 sec3'
 
 .center

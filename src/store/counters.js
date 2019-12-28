@@ -3,12 +3,13 @@ export default {
   actions: {
     async getArticleId() {
       try {
-        const articleId = (
-          await firebase
-            .database()
-            .ref(`systemData/counters/counterArticle`)
-            .once("value")
-        ).val();
+        const articleId =
+          (
+            await firebase
+              .database()
+              .ref(`systemData/counters/counterArticle`)
+              .once("value")
+          ).val() || 1000;
         const updateArticleId = articleId + 1;
         await firebase
           .database()
@@ -21,12 +22,13 @@ export default {
     },
     async getRepositoryId() {
       try {
-        const repositoryId = (
-          await firebase
-            .database()
-            .ref(`systemData/counters/counterRepository`)
-            .once("value")
-        ).val();
+        const repositoryId =
+          (
+            await firebase
+              .database()
+              .ref(`systemData/counters/counterRepository`)
+              .once("value")
+          ).val() || 1000;
         const updateRepositoryId = repositoryId + 1;
         await firebase
           .database()

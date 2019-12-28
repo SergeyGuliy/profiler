@@ -16,9 +16,11 @@ export default {
     };
   },
   mounted() {
+    console.log(this.$route.params.user);
     this.loading = true;
   }
 };
 </script>
 
 <style scoped></style>
++
