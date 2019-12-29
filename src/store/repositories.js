@@ -7,6 +7,7 @@ export default {
         .ref(`repositories/${repositoryData.id}/`)
         .set({
           creator: getters.user.profile,
+          creator_id: getters.user.id,
           slug: repositoryData.slug,
           name: repositoryData.name,
           about: repositoryData.about,
@@ -74,6 +75,19 @@ export default {
           .set(getters.user.lists.repositories);
       } catch (e) {
         console.log(e);
+      }
+    },
+    async fetchARepositoryById({ dispatch }, id) {
+      dispatch;
+      try {
+        return (
+          await firebase
+            .database()
+            .ref(`/repositories/${id}/`)
+            .once("value")
+        ).val();
+      } catch (e) {
+        console.log("User is not Logged In");
       }
     }
   }

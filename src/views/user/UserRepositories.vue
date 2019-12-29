@@ -64,6 +64,15 @@
                   <td>{{ repository.name }}</td>
                   <td>{{ repository.creator }}</td>
                   <td class="flex">
+                    <router-link
+                      class="btn del"
+                      :to="{
+                        name: 'repository',
+                        params: { repository: repository.id }
+                      }"
+                    >
+                      <img src="../../assets/icons/showGitHub.png" alt="" />
+                    </router-link>
                     <button
                       class="btn del"
                       v-if="

@@ -15,40 +15,11 @@
           <div></div>
         </div>
         <div class="section-1">
-          <div v-if="gitHubInfo" class="card horizontal">
+          <div v-if="gitHubInfo" class="card">
             <div class="card-image">
-              <img v-bind:src="gitHubInfo.avatar_url" />
-            </div>
-            <div class="card-stacked">
-              <div class="card-content">
-                <div class="btn-group">
-                  <h5 class="center">GitHub</h5>
-                  <a
-                    target="_blank"
-                    v-bind:href="gitHubInfo.html_url"
-                    class="btn"
-                    >Профиль</a
-                  >
-                  <a
-                    target="_blank"
-                    v-bind:href="gitHubInfo.html_followers"
-                    class="btn"
-                    >Последователи <span>{{ gitHubInfo.followers }}</span></a
-                  >
-                  <a
-                    target="_blank"
-                    v-bind:href="gitHubInfo.html_following"
-                    class="btn"
-                    >Сдедующие <span>{{ gitHubInfo.following }}</span></a
-                  >
-                  <a
-                    target="_blank"
-                    v-bind:href="gitHubInfo.html_repositories"
-                    class="btn"
-                    >Репозитории <span>{{ gitHubInfo.public_repos }}</span></a
-                  >
-                </div>
-              </div>
+              <a target="_blank" v-bind:href="gitHubInfo.html_url"
+                ><img v-bind:src="gitHubInfo.avatar_url"
+              /></a>
             </div>
           </div>
           <ul class="collection with-header">
@@ -71,51 +42,6 @@
             <li class="collection-item">
               <pre v-if="user.info.about">{{ user.info.about }}</pre>
               <pre v-else>Не указано</pre>
-            </li>
-          </ul>
-          <ul class="collection with-header">
-            <li class="collection-header"><h5>Контакты:</h5></li>
-            <li class="collection-item">
-              Телефон:
-              <span v-if="user.contacts.phone" class="right">{{
-                user.contacts.phone
-              }}</span>
-              <span v-else class="right">Не указано</span>
-            </li>
-            <li class="collection-item">
-              Сайт визитка:
-              <span v-if="user.contacts.site" class="right">{{
-                user.contacts.site
-              }}</span>
-              <span v-else class="right">Не указано</span>
-            </li>
-            <li class="collection-item">
-              LinkedIn:
-              <span v-if="user.contacts.linkedIn" class="right">{{
-                user.contacts.linkedIn
-              }}</span>
-              <span v-else class="right">Не указано</span>
-            </li>
-            <li class="collection-item">
-              Facebook:
-              <span v-if="user.contacts.facebook" class="right">{{
-                user.contacts.facebook
-              }}</span>
-              <span v-else class="right">Не указано</span>
-            </li>
-            <li class="collection-item">
-              E-mail:
-              <span v-if="user.contacts.email" class="right">{{
-                user.contacts.email
-              }}</span>
-              <span v-else class="right">Не указано</span>
-            </li>
-            <li class="collection-item">
-              GitHub:
-              <span v-if="user.contacts.github" class="right">{{
-                user.contacts.github
-              }}</span>
-              <span v-else class="right">Не указано</span>
             </li>
           </ul>
         </div>
@@ -183,96 +109,192 @@
           </ul>
         </div>
         <div class="section-3">
-          <div class="card">
-            <div class="card-image">
-              <img src="../assets/friends.jpeg" />
-            </div>
-            <div class="card-content">
-              <button
-                class="btn activator hide-show"
+          <ul class="collection with-header">
+            <li class="collection-header"><h5>Контакты:</h5></li>
+            <li class="collection-item">
+              Телефон:
+              <a
+                target="_blank"
+                :to="'tel:' + user.contacts.phone"
+                v-if="user.contacts.phone"
+                class="right"
+                >{{ user.contacts.phone }}</a
+              >
+              <span v-else class="right">Не указано</span>
+            </li>
+            <li class="collection-item">
+              Сайт визитка:
+              <a
+                target="_blank"
+                :href="user.contacts.site"
+                v-if="user.contacts.site"
+                class="right"
+                >{{
+                  user.contacts.site.split("/")[
+                    user.contacts.site.split("/").length - 1
+                  ]
+                }}</a
+              >
+              <span v-else class="right">Не указано</span>
+            </li>
+            <li class="collection-item">
+              LinkedIn:
+              <a
+                target="_blank"
+                :href="user.contacts.linkedIn"
+                v-if="user.contacts.linkedIn"
+                class="right"
+                >{{
+                  user.contacts.linkedIn.split("/")[
+                    user.contacts.linkedIn.split("/").length - 1
+                  ]
+                }}</a
+              >
+              <span v-else class="right">Не указано</span>
+            </li>
+            <li class="collection-item">
+              Facebook:
+              <a
+                target="_blank"
+                :href="user.contacts.facebook"
+                v-if="user.contacts.facebook"
+                class="right"
+                >{{
+                  user.contacts.facebook.split("/")[
+                    user.contacts.facebook.split("/").length - 1
+                  ]
+                }}</a
+              >
+              <span v-else class="right">Не указано</span>
+            </li>
+            <li class="collection-item">
+              E-mail:
+              <a
+                target="_blank"
+                :href="'mailto:' + user.contacts.email"
+                v-if="user.contacts.email"
+                class="right"
+                >{{
+                  user.contacts.email.split("/")[
+                    user.contacts.email.split("/").length - 1
+                  ]
+                }}</a
+              >
+              <span v-else class="right">Не указано</span>
+            </li>
+            <li class="collection-item">
+              GitHub:
+              <a
+                target="_blank"
+                :href="user.contacts.github"
+                v-if="user.contacts.github"
+                class="right"
+                >{{
+                  user.contacts.github.split("/")[
+                    user.contacts.github.split("/").length - 1
+                  ]
+                }}</a
+              >
+              <span v-else class="right">Не указано</span>
+            </li>
+          </ul>
+          <ul class="collapsible">
+            <li class="active">
+              <div class="collapsible-header">
+                <div>
+                  <img src="../assets/icons/showFriends.png" alt="" />
+                  <span>Список друзей</span>
+                </div>
+                <span class="badge-up">{{ user.lists.friends.length }}</span>
+              </div>
+              <div
+                class="collapsible-body"
                 v-if="user.lists.friends.length > 0"
               >
-                Ваши контакты
-                <span>{{ user.lists.friends.length }}</span>
-              </button>
-              <button class="btn hide-show" v-else>
-                У вас нет контактов. Добавить?
-              </button>
-            </div>
-            <div class="card-reveal">
-              <button class="card-title btn hide-show">Скрыть</button>
-              <div class="collection">
-                <li
-                  v-for="user in myFriends"
-                  v-bind:key="user.id"
-                  class="collection-item card-flex"
-                >
-                  <span>{{ user.profile }}</span>
-                  <button class="btn">Открыть</button>
-                </li>
+                <ul class="collection">
+                  <li
+                    v-for="user in myFriends"
+                    v-bind:key="user.id"
+                    class="collection-item card-flex"
+                  >
+                    <span>{{ user.profile }}</span>
+                    <router-link
+                      class="btn"
+                      :to="{
+                        name: 'user',
+                        params: { user: user.id }
+                      }"
+                      >Открыть</router-link
+                    >
+                  </li>
+                </ul>
               </div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-image">
-              <img src="../assets/articles.jpg" />
-            </div>
-            <div class="card-content">
-              <button
-                class="btn activator hide-show"
+            </li>
+            <li>
+              <div class="collapsible-header">
+                <div>
+                  <img src="../assets/icons/showArticles.png" alt="" />
+                  <span>Список статей</span>
+                </div>
+                <span class="badge-up">{{ user.lists.articles.length }}</span>
+              </div>
+              <div
+                class="collapsible-body"
                 v-if="user.lists.articles.length > 0"
               >
-                Ваши статьи
-                <span>{{ user.lists.articles.length }}</span>
-              </button>
-              <button class="btn hide-show" v-else>
-                У вас нет статей. Добавить?
-              </button>
-            </div>
-            <div class="card-reveal">
-              <button class="card-title btn hide-show">Скрыть</button>
-              <div class="collection">
-                <li
-                  v-for="article in myArticles"
-                  v-bind:key="article.id"
-                  class="collection-item card-flex"
-                >
-                  <span>{{ article.name }}</span>
-                  <button class="btn">Открыть</button>
-                </li>
+                <ul class="collection">
+                  <li
+                    v-for="article in myArticles"
+                    v-bind:key="article.id"
+                    class="collection-item card-flex"
+                  >
+                    <span>{{ article.name }}</span>
+                    <router-link
+                      class="btn"
+                      :to="{
+                        name: 'article',
+                        params: { article: article.id }
+                      }"
+                      >Открыть</router-link
+                    >
+                  </li>
+                </ul>
               </div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-image">
-              <img src="../assets/repositories.png" />
-            </div>
-            <div class="card-content">
-              <button
-                class="btn activator hide-show"
+            </li>
+            <li>
+              <div class="collapsible-header">
+                <div>
+                  <img src="../assets/icons/showGitHub.png" alt="" />
+                  <span>Список репозиториев</span>
+                </div>
+                <span class="badge-up">{{
+                  user.lists.repositories.length
+                }}</span>
+              </div>
+              <div
+                class="collapsible-body"
                 v-if="user.lists.repositories.length > 0"
               >
-                Ваши статьи
-                <span>{{ user.lists.repositories.length }}</span>
-              </button>
-              <button class="btn hide-show" v-else>
-                У вас нет статей. Добавить?
-              </button>
-            </div>
-            <div class="card-reveal">
-              <button class="card-title btn hide-show">Скрыть</button>
-              <div class="collection">
-                <li
-                  v-for="repository in myRepositories"
-                  v-bind:key="repository.id"
-                  class="collection-item card-flex"
-                >
-                  <span>{{ repository.name }}</span>
-                  <button class="btn">Открыть</button>
-                </li>
+                <ul class="collection">
+                  <li
+                    v-for="repository in myRepositories"
+                    v-bind:key="repository.id"
+                    class="collection-item card-flex"
+                  >
+                    <span>{{ repository.name }}</span>
+                    <router-link
+                      class="btn"
+                      :to="{
+                        name: 'repository',
+                        params: { repository: repository.id }
+                      }"
+                      >Открыть</router-link
+                    >
+                  </li>
+                </ul>
               </div>
-            </div>
-          </div>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -282,6 +304,7 @@
 
 <script>
 import Loader from "../components/Loader";
+import M from "materialize-css/dist/js/materialize.min";
 export default {
   name: "home",
   components: { Loader },
@@ -300,6 +323,7 @@ export default {
     }
   },
   async mounted() {
+    M.Collapsible.init(document.querySelectorAll(".collapsible"));
     await this.$store.dispatch("fetchUser");
     // Fetching user Articles
     const allArticles = await this.$store.dispatch("fetchAllArticles");
@@ -336,68 +360,31 @@ export default {
         `https://api.github.com/users/${gitHubName}`
       );
       this.gitHubInfo = await fetchGithub.json();
-      this.gitHubInfo.html_repositories = `${this.gitHubInfo.html_url}?tab=repositories`;
-      this.gitHubInfo.html_followers = `${this.gitHubInfo.html_url}?tab=followers`;
-      this.gitHubInfo.html_following = `${this.gitHubInfo.html_url}?tab=following`;
-      console.log(this.gitHubInfo);
     }
 
     this.loading = true;
+  },
+  updated() {
+    M.Collapsible.init(document.querySelectorAll(".collapsible"));
   }
 };
 </script>
 <style scoped lang="sass">
 .grid
-  grid-template-rows: 50px 1fr 1fr 1fr
+  grid-template-rows: 72px 1fr 1fr 1fr
   grid-template-areas: 'head head head head head head' 'sec1 sec1 sec2 sec2 sec3 sec3' 'sec1 sec1 sec2 sec2 sec3 sec3' 'sec1 sec1 sec2 sec2 sec3 sec3'
   @media screen and (max-width: 1150px)
     grid-template-areas: 'head head head head head head' 'sec1 sec1 sec1 sec3 sec3 sec3' 'sec2 sec2 sec2 sec2 sec2 sec2'
-    grid-template-rows: 50px 1fr 1fr
+    grid-template-rows: 72px 1fr 1fr
   @media screen and (max-width: 740px)
     grid-template-areas: 'head head head head head head' 'sec1 sec1 sec1 sec1 sec1 sec1' 'sec2 sec2 sec2 sec2 sec2 sec2' 'sec3 sec3 sec3 sec3 sec3 sec3'
 .badge-up
   margin-left: 10px !important
-  width: 60px !important
+  padding: 1px 5px
   text-align: center
   border: 1px solid black
   border-radius: 2px
   background-color: aquamarine
-
-.section-3 .card
-  height: 235px
-  .card-image img
-    height: 205px
-  .card-reveal, .card-content
-    padding: 0 !important
-.btn.hide-show
-  width: 100%
-  height: 30px
-  display: flex
-  align-items: center
-  justify-content: center
-  font-family: sans-serif
-  font-size: 100%
-  line-height: 1.15
-  span
-    display: inline-block
-    background-color: blue
-    line-height: 20px
-    border: 1px solid black
-    border-radius: 2px
-    width: 30px
-    height: 20px
-    margin-left: 10px
-.card-flex
-  display: flex
-  flex-direction: row
-  justify-content: space-between
-  align-items: center
-  padding: 5px 20px !important
-  .btn
-    height: 20px
-    padding: 0 10px !important
-    line-height: 10px
-
 .section-1, .section-2, .section-3
   padding: 10px 10px !important
 h5
@@ -405,38 +392,40 @@ h5
 .collection-item
   padding: 7px 30px !important
 
-.card.horizontal
-  img
-    width: 100%
-    max-width: 220px
-  h5
-    margin: 10px
-  .card-content
-    padding: 5px !important
-  .btn-group
+.card
+  .card-image
+    padding: 10px
+    img
+      margin: 0 auto
+      max-height: 250px
+      max-width: 250px
+
+
+
+
+.collapsible
+  .collapsible-header
     display: flex
-    flex-direction: column
-    justify-content: center
+    justify-content: space-between
     align-items: center
-    .btn
-      width: 100%
-      margin: 3px 0
-      padding: 0 5px !important
-      @media screen and (max-width: 1430px)
-        font-size: 12px
-      @media screen and (max-width: 1330px)
-        font-size: 12px
-        height: 30px
-      @media screen and (max-width: 450px)
-        font-size: 10px
-        height: 25px
-        line-height: 25px
-    span
-      display: inline-block
-      background-color: blue
-      line-height: 15px
-      border: 1px solid black
-      border-radius: 2px
-      width: 18px
-      height: 15px
+    div
+      display: flex
+      justify-content: center
+      align-items: center
+      img
+        height: 20px
+        margin-right: 10px
+
+  .collapsible-body
+    padding: 5px
+    .card-flex
+      display: flex
+      flex-direction: row
+      justify-content: space-between
+      align-items: center
+      padding: 5px 20px !important
+      .btn
+        height: 20px
+        padding: 0 10px !important
+        line-height: 18px
 </style>

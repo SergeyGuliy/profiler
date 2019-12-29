@@ -38,9 +38,15 @@
                   <td>{{ user.profile }}</td>
                   <td>18</td>
                   <td class="flex">
-                    <button class="btn">
+                    <router-link
+                      class="btn"
+                      :to="{
+                        name: 'user',
+                        params: { user: user.id }
+                      }"
+                    >
                       <img src="../../../assets/icons/user.png" alt="" />
-                    </button>
+                    </router-link>
                     <button
                       class="btn del"
                       v-if="!friendsList.includes(user.id) && userLoggedIn"

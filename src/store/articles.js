@@ -7,6 +7,7 @@ export default {
         .ref(`articles/${articleData.id}/`)
         .set({
           creator: getters.user.profile,
+          creator_id: getters.user.id,
           slug: articleData.slug,
           name: articleData.name,
           about: articleData.about,
@@ -74,6 +75,19 @@ export default {
           .set(getters.user.lists.articles);
       } catch (e) {
         console.log(e);
+      }
+    },
+    async fetchArticleById({ dispatch }, id) {
+      dispatch;
+      try {
+        return (
+          await firebase
+            .database()
+            .ref(`/articles/${id}/`)
+            .once("value")
+        ).val();
+      } catch (e) {
+        console.log("User is not Logged In");
       }
     }
   }

@@ -33,7 +33,7 @@
             </select>
             <label>Доступность</label>
           </div>
-          <button class="btn" v-on:click="fff">
+          <button class="btn" v-on:click="createArticle">
             Сохранить<img
               class="right ico"
               src="../../assets/icons/save.png"
@@ -131,7 +131,7 @@ export default {
     M.FormSelect.init(document.querySelectorAll("select"));
   },
   methods: {
-    async fff() {
+    async createArticle() {
       const articleData = {
         id: await this.$store.dispatch("getArticleId"),
         slug: slugify(this.article.name),

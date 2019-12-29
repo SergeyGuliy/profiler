@@ -49,12 +49,18 @@
                   <td>{{ article.name }}</td>
                   <td>{{ article.creator }}</td>
                   <td class="flex">
-                    <button class="btn del">
+                    <router-link
+                      class="btn del"
+                      :to="{
+                        name: 'article',
+                        params: { article: article.id }
+                      }"
+                    >
                       <img
                         src="../../../assets/icons/showArticles.png"
                         alt=""
                       />
-                    </button>
+                    </router-link>
                     <button
                       class="btn del"
                       v-if="!myArticleList.includes(article.id) && userLoggedIn"
