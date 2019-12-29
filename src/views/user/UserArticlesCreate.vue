@@ -33,7 +33,19 @@
             </select>
             <label>Доступность</label>
           </div>
-          <button class="btn" v-on:click="createArticle">
+          <button
+            class="btn"
+            v-on:click="createArticle"
+            v-bind:class="{
+              disabled:
+                !$v.article.name.required ||
+                !$v.article.name.minLength ||
+                !$v.article.name.maxLength ||
+                !$v.article.cite.required ||
+                !$v.article.cite.minLength ||
+                !$v.article.cite.maxLength
+            }"
+          >
             Сохранить<img
               class="right ico"
               src="../../assets/icons/save.png"
@@ -48,8 +60,13 @@
           <input
             id="first_name_change"
             type="text"
-            class="validate"
             v-model="article.name"
+            v-bind:class="{
+              invalid:
+                !$v.article.name.required ||
+                !$v.article.name.minLength ||
+                !$v.article.name.maxLength
+            }"
           />
           <label for="first_name_change">Название статьи</label>
         </div>
@@ -67,9 +84,14 @@
           <input
             id="site"
             type="url"
-            class="validate"
             placeholder="https://www.example.com"
             v-model="article.cite"
+            v-bind:class="{
+              invalid:
+                !$v.article.cite.required ||
+                !$v.article.cite.minLength ||
+                !$v.article.cite.maxLength
+            }"
           />
           <label for="site">Официальный сайт</label>
         </div>
@@ -93,6 +115,7 @@
 import Loader from "../../components/Loader";
 import M from "materialize-css/dist/js/materialize.min";
 import { slugify } from "transliteration";
+import { required, minLength, maxLength } from "vuelidate/lib/validators";
 export default {
   name: "UserArticlesCreate",
   components: { Loader },
@@ -118,6 +141,16 @@ export default {
       } else {
         return [];
       }
+    }
+  },
+  validations: {
+    article: {
+      name: {
+        minLength: minLength(3),
+        maxLength: maxLength(10),
+        required
+      },
+      cite: { minLength: minLength(1), maxLength: maxLength(10), required }
     }
   },
   async mounted() {

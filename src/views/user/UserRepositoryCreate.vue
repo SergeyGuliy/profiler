@@ -5,7 +5,7 @@
         <span class="badge">Создать статью</span>
         <div>
           <div class="input-field input">
-            <select v-model="article.languages">
+            <select v-model="repository.languages">
               <option
                 v-for="language in programingLanguages"
                 v-bind:key="language.name"
@@ -16,7 +16,7 @@
             <label>Языки програмирования</label>
           </div>
           <div class="input-field input">
-            <select v-model="article.technologies">
+            <select v-model="repository.technologies">
               <option
                 v-for="technology in technologySelected"
                 v-bind:key="technology"
@@ -27,13 +27,25 @@
             <label>Технологии</label>
           </div>
           <div class="input-field input">
-            <select v-model="article.accessibility">
+            <select v-model="repository.accessibility">
               <option value="private" selected>Приватный</option>
               <option value="public">Публичный</option>
             </select>
             <label>Доступность</label>
           </div>
-          <button class="btn" v-on:click="fff">
+          <button
+            class="btn"
+            v-on:click="fff"
+            v-bind:class="{
+              disabled:
+                !$v.repository.name.required ||
+                !$v.repository.name.minLength ||
+                !$v.repository.name.maxLength ||
+                !$v.repository.repository.required ||
+                !$v.repository.repository.minLength ||
+                !$v.repository.repository.maxLength
+            }"
+          >
             Сохранить<img
               class="right ico"
               src="../../assets/icons/save.png"
@@ -48,8 +60,13 @@
           <input
             id="first_name_change"
             type="text"
-            class="validate"
-            v-model="article.name"
+            v-model="repository.name"
+            v-bind:class="{
+              invalid:
+                !$v.repository.name.required ||
+                !$v.repository.name.minLength ||
+                !$v.repository.name.maxLength
+            }"
           />
           <label for="first_name_change">Название статьи</label>
         </div>
@@ -57,7 +74,7 @@
           <textarea
             id="about"
             class="materialize-textarea"
-            v-model="article.about"
+            v-model="repository.about"
           />
           <label for="about">Описание статьи</label>
         </div>
@@ -65,23 +82,28 @@
       <div class="section-2">
         <div class="input-field center">
           <input
+            id="repository"
+            type="url"
+            placeholder="https://github.com/USER/REPOSITORY"
+            v-model="repository.repository"
+            v-bind:class="{
+              invalid:
+                !$v.repository.repository.required ||
+                !$v.repository.repository.minLength ||
+                !$v.repository.repository.maxLength
+            }"
+          />
+          <label for="site">Git Hub репозиторий</label>
+        </div>
+        <div class="input-field center">
+          <input
             id="site"
             type="url"
             class="validate"
             placeholder="https://www.example.com"
-            v-model="article.cite"
+            v-model="repository.cite"
           />
           <label for="site">Официальный сайт</label>
-        </div>
-        <div class="input-field center">
-          <input
-            id="repository"
-            type="url"
-            class="validate"
-            placeholder="https://github.com/USER/REPOSITORY"
-            v-model="article.repository"
-          />
-          <label for="site">Git Hub репозиторий</label>
         </div>
       </div>
     </div>
@@ -93,13 +115,14 @@
 import Loader from "../../components/Loader";
 import M from "materialize-css/dist/js/materialize.min";
 import { slugify } from "transliteration";
+import { required, minLength, maxLength } from "vuelidate/lib/validators";
 export default {
   name: "UserRepositoryCreate",
   components: { Loader },
   data() {
     return {
       loading: false,
-      article: {
+      repository: {
         name: "",
         languages: "",
         technologies: "",
@@ -110,10 +133,24 @@ export default {
       }
     };
   },
+  validations: {
+    repository: {
+      name: {
+        minLength: minLength(3),
+        maxLength: maxLength(10),
+        required
+      },
+      repository: {
+        minLength: minLength(1),
+        maxLength: maxLength(10),
+        required
+      }
+    }
+  },
   computed: {
     technologySelected() {
-      if (this.article.languages) {
-        return this.programingLanguages[this.article.languages].technologies;
+      if (this.repository.languages) {
+        return this.programingLanguages[this.repository.languages].technologies;
       } else {
         return [];
       }
@@ -133,18 +170,18 @@ export default {
     async fff() {
       const repositoryData = {
         id: await this.$store.dispatch("getRepositoryId"),
-        slug: slugify(this.article.name),
-        name: this.article.name,
-        about: this.article.about,
-        cite: this.article.cite.split("://")[
-          this.article.cite.split("://").length - 1
+        slug: slugify(this.repository.name),
+        name: this.repository.name,
+        about: this.repository.about,
+        cite: this.repository.cite.split("://")[
+          this.repository.cite.split("://").length - 1
         ],
-        repository: this.article.repository.split("github.com/")[
-          this.article.repository.split("github.com/").length - 1
+        repository: this.repository.repository.split("github.com/")[
+          this.repository.repository.split("github.com/").length - 1
         ],
-        accessibility: this.article.accessibility,
-        languages: this.article.languages,
-        technologies: this.article.technologies
+        accessibility: this.repository.accessibility,
+        languages: this.repository.languages,
+        technologies: this.repository.technologies
       };
       await this.$store.dispatch("createRepository", repositoryData);
       await this.$router.push(

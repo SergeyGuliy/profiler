@@ -10,12 +10,28 @@
             <input
               id="programingLanguages"
               type="text"
-              class="validate"
               v-model="programingLanguage"
+              v-bind:class="{
+                invalid:
+                  !$v.programingLanguage.required ||
+                  !$v.programingLanguage.minLength ||
+                  !$v.programingLanguage.maxLength
+              }"
             />
             <label for="programingLanguages">Язык програмирования</label>
           </div>
-          <button class="btn col s12" v-on:click="addLanguage">Добавить</button>
+          <button
+            class="btn col s12"
+            v-on:click="addLanguage"
+            v-bind:class="{
+              disabled:
+                !$v.programingLanguage.required ||
+                !$v.programingLanguage.minLength ||
+                !$v.programingLanguage.maxLength
+            }"
+          >
+            Добавить
+          </button>
         </div>
         <ul class="collection">
           <li
@@ -52,12 +68,28 @@
             <input
               id="technology"
               type="text"
-              class="validate"
               v-model="technology"
+              v-bind:class="{
+                invalid:
+                  !$v.technology.required ||
+                  !$v.technology.minLength ||
+                  !$v.technology.maxLength ||
+                  !programingLanguageSelected
+              }"
             />
             <label for="technology">Технологии</label>
           </div>
-          <button class="btn col s12" v-on:click="addTechnology">
+          <button
+            class="btn col s12"
+            v-on:click="addTechnology"
+            v-bind:class="{
+              disabled:
+                !$v.technology.required ||
+                !$v.technology.minLength ||
+                !$v.technology.maxLength ||
+                !programingLanguageSelected
+            }"
+          >
             Добавить
           </button>
         </div>
@@ -87,6 +119,7 @@
 <script>
 import Loader from "../../components/Loader";
 import M from "materialize-css/dist/js/materialize.min";
+import { required, minLength, maxLength } from "vuelidate/lib/validators";
 export default {
   name: "UserAdmin",
   components: { Loader },
@@ -98,6 +131,14 @@ export default {
       programingLanguage: "",
       technology: ""
     };
+  },
+  validations: {
+    programingLanguage: {
+      minLength: minLength(1),
+      maxLength: maxLength(10),
+      required
+    },
+    technology: { minLength: minLength(1), maxLength: maxLength(10), required }
   },
   computed: {
     languageTechnologies() {
