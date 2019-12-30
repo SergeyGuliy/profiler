@@ -30,7 +30,10 @@
             <p class="center" v-if="myFriendsId.length === 0">
               У вас нет друзей
             </p>
-            <table class="highlight centered table" v-else>
+            <table
+              v-else-if="myUsersFiltred.length > 0"
+              class="highlight centered table"
+            >
               <thead>
                 <tr>
                   <th>Имя</th>
@@ -42,7 +45,7 @@
               </thead>
 
               <tbody>
-                <tr v-for="user in users" v-bind:key="user.uid">
+                <tr v-for="user in myUsersFiltred" v-bind:key="user.uid">
                   <td>{{ user.profile || 0 }}</td>
                   <td>{{ user.lists.friends.length || 0 }}</td>
                   <td>{{ user.lists.articles.length || 0 }}</td>
@@ -68,6 +71,7 @@
                 </tr>
               </tbody>
             </table>
+            <p v-else class="center">Поиск не дал результатов</p>
           </div>
         </div>
       </div>
