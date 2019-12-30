@@ -32,15 +32,14 @@
       <div v-else class="grid">
         <div class="header">
           <span class="badge">Мои статьи</span>
-          <div>
-            <input id="search" type="text" class="validate input" />
-            <button class="btn">
-              Поиск<img
-                class="right ico"
-                src="../../assets/icons/search.png"
-                alt=""
-              />
-            </button>
+          <div class="input-field">
+            <input
+              id="last_name"
+              type="text"
+              class="validate input"
+              v-model="key"
+            />
+            <label for="last_name">Поиск</label>
           </div>
         </div>
         <div class="section-1">
@@ -51,21 +50,29 @@
                 >Посмотреть список всех статей</router-link
               >
             </div>
-            <table v-else class="highlight centered table">
+            <table
+              v-else-if="myArticlesFiltred.length > 0"
+              class="highlight centered table"
+            >
               <thead>
                 <tr>
-                  <th>#</th>
                   <th>Название</th>
                   <th>Создатель</th>
+                  <th>Язык</th>
+                  <th>Технология</th>
                   <th>Профиль</th>
                 </tr>
               </thead>
 
               <tbody>
-                <tr v-for="article in myArticles" v-bind:key="article.id">
-                  <td>{{ article.id }}</td>
+                <tr
+                  v-for="article in myArticlesFiltred"
+                  v-bind:key="article.id"
+                >
                   <td>{{ article.name }}</td>
                   <td>{{ article.creator }}</td>
+                  <td>{{ article.languages }}</td>
+                  <td>{{ article.technologies }}</td>
                   <td class="flex">
                     <router-link
                       class="btn del"
@@ -87,6 +94,7 @@
                 </tr>
               </tbody>
             </table>
+            <p v-else class="center">Поиск не дал результатов</p>
           </div>
         </div>
         <router-link
@@ -111,10 +119,23 @@ export default {
   data() {
     return {
       loading: false,
+      key: "",
       myArticles: []
     };
   },
   computed: {
+    myArticlesFiltred() {
+      if (this.key === "") {
+        return this.myArticles;
+      } else {
+        return this.myArticles.filter(value => {
+          return (
+            value.languages.toLowerCase().includes(this.key.toLowerCase()) ||
+            value.technologies.toLowerCase().includes(this.key.toLowerCase())
+          );
+        });
+      }
+    },
     myArticlesId() {
       return this.$store.getters.user.lists.articles;
     },
@@ -137,17 +158,6 @@ export default {
     }
   },
   async mounted() {
-    const allArticles = await this.$store.dispatch("fetchAllArticles");
-    let myArticles = [];
-    for (let f of this.myArticlesId) {
-      let article = allArticles[f];
-      article.id = f;
-      myArticles.push(article);
-    }
-    this.myArticles = myArticles;
-    this.loading = true;
-  },
-  async updated() {
     const allArticles = await this.$store.dispatch("fetchAllArticles");
     let myArticles = [];
     for (let f of this.myArticlesId) {

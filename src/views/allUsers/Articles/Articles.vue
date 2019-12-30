@@ -20,34 +20,41 @@
       <div v-else class="grid">
         <div class="header">
           <span class="badge">Статьи</span>
-          <div>
-            <input type="text" class="validate input" />
-            <button class="btn">
-              Поиск<img
-                class="right ico"
-                src="../../../assets/icons/search.png"
-                alt=""
-              />
-            </button>
+          <div class="input-field">
+            <input
+              id="last_name"
+              type="text"
+              class="validate input"
+              v-model="key"
+            />
+            <label for="last_name">Поиск</label>
           </div>
         </div>
         <div class="section-1">
           <div class="input-field center">
-            <table class="highlight centered table">
+            <table
+              v-if="publicArticlesFiltred.length > 0"
+              class="highlight centered table"
+            >
               <thead>
                 <tr>
-                  <th>#</th>
                   <th>Название</th>
-                  <th>Оценка</th>
+                  <th>Создатель</th>
+                  <th>Язык</th>
+                  <th>Технология</th>
                   <th>Профиль</th>
                 </tr>
               </thead>
 
               <tbody>
-                <tr v-for="article in publicArticles" v-bind:key="article.id">
-                  <td>{{ article.id }}</td>
+                <tr
+                  v-for="article in publicArticlesFiltred"
+                  v-bind:key="article.id"
+                >
                   <td>{{ article.name }}</td>
                   <td>{{ article.creator }}</td>
+                  <td>{{ article.languages }}</td>
+                  <td>{{ article.technologies }}</td>
                   <td class="flex">
                     <router-link
                       class="btn del"
@@ -79,6 +86,7 @@
                 </tr>
               </tbody>
             </table>
+            <p v-else class="center">Поиск не дал результатов</p>
           </div>
         </div>
       </div>
@@ -95,10 +103,23 @@ export default {
   data() {
     return {
       loading: false,
+      key: "",
       publicArticles: []
     };
   },
   computed: {
+    publicArticlesFiltred() {
+      if (this.key === "") {
+        return this.publicArticles;
+      } else {
+        return this.publicArticles.filter(value => {
+          return (
+            value.languages.toLowerCase().includes(this.key.toLowerCase()) ||
+            value.technologies.toLowerCase().includes(this.key.toLowerCase())
+          );
+        });
+      }
+    },
     myArticleList() {
       if (this.$store.getters.user.lists.articles) {
         return this.$store.getters.user.lists.articles;
@@ -115,19 +136,6 @@ export default {
     }
   },
   async mounted() {
-    const allArticles = (await this.$store.dispatch("fetchAllArticles")) || [];
-    const publicArticlesId =
-      (await this.$store.dispatch("fetchPublicArticles")) || [];
-    let publicArticles = [];
-    for (let f of publicArticlesId) {
-      let article = allArticles[f];
-      article.id = f;
-      publicArticles.push(article);
-    }
-    this.publicArticles = publicArticles;
-    this.loading = true;
-  },
-  async updated() {
     const allArticles = (await this.$store.dispatch("fetchAllArticles")) || [];
     const publicArticlesId =
       (await this.$store.dispatch("fetchPublicArticles")) || [];

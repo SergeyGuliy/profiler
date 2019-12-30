@@ -9,34 +9,38 @@
       <div class="grid" v-else>
         <div class="header">
           <span class="badge">Пользователи</span>
-          <div>
-            <input type="text" class="validate input" />
-            <button class="btn">
-              Поиск<img
-                class="right ico"
-                src="../../../assets/icons/search.png"
-                alt=""
-              />
-            </button>
+          <div class="input-field">
+            <input
+              id="last_name"
+              type="text"
+              class="validate input"
+              v-model="key"
+            />
+            <label for="last_name">Поиск</label>
           </div>
         </div>
         <div class="section-1">
           <div class="input-field center">
-            <table class="highlight centered table">
+            <table
+              v-if="publicUsersFiltred.length > 0"
+              class="highlight centered table"
+            >
               <thead>
                 <tr>
-                  <th>#</th>
                   <th>Имя</th>
-                  <th>Оценка</th>
+                  <th>Друзей</th>
+                  <th>Статьи</th>
+                  <th>Репозитории</th>
                   <th>Профиль</th>
                 </tr>
               </thead>
 
               <tbody>
-                <tr v-for="user in users" v-bind:key="user.id">
-                  <td>1</td>
-                  <td>{{ user.profile }}</td>
-                  <td>18</td>
+                <tr v-for="user in publicUsersFiltred" v-bind:key="user.id">
+                  <td>{{ user.profile || 0 }}</td>
+                  <td>{{ user.lists.friends.length || 0 }}</td>
+                  <td>{{ user.lists.articles.length || 0 }}</td>
+                  <td>{{ user.lists.repositories.length || 0 }}</td>
                   <td class="flex">
                     <router-link
                       class="btn"
@@ -65,6 +69,7 @@
                 </tr>
               </tbody>
             </table>
+            <p v-else class="center">Поиск не дал результатов</p>
           </div>
         </div>
       </div>
@@ -75,16 +80,28 @@
 
 <script>
 import Loader from "../../../components/Loader";
+import defaultsDeep from "/mnt/d032024c-b3ba-4342-a367-51e8737d8935/IT/My_Projects/3_Vue.js/profiler/node_modules/lodash.defaultsdeep/index.js";
+
 export default {
   name: "Users",
   components: { Loader },
   data() {
     return {
       loading: false,
+      key: "",
       users: []
     };
   },
   computed: {
+    publicUsersFiltred() {
+      if (this.key === "") {
+        return this.users;
+      } else {
+        return this.users.filter(value => {
+          return value.profile.toLowerCase().includes(this.key.toLowerCase());
+        });
+      }
+    },
     friendsList() {
       if (this.$store.getters.user.lists.friends) {
         return this.$store.getters.user.lists.friends;
@@ -102,6 +119,20 @@ export default {
   },
   async mounted() {
     let users = (await this.$store.dispatch("fetchAllUsers")) || [];
+    let userArray = [];
+    for (let f in users) {
+      let userModified = users[f];
+      const userBasic = {
+        lists: {
+          friends: [],
+          articles: [],
+          repositories: []
+        }
+      };
+      const user = defaultsDeep(userModified, userBasic);
+
+      userArray.push(user);
+    }
     if (this.userLoggedIn) {
       if (Object.keys(users).length === 1) {
         users = [];
@@ -109,19 +140,7 @@ export default {
         delete users[this.$store.getters.user.id];
       }
     }
-    this.users = users;
-    this.loading = true;
-  },
-  async updated() {
-    let users = (await this.$store.dispatch("fetchAllUsers")) || [];
-    if (this.userLoggedIn) {
-      if (Object.keys(users).length === 1) {
-        users = [];
-      } else if (Object.keys(users).length > 1) {
-        delete users[this.$store.getters.user.id];
-      }
-    }
-    this.users = users;
+    this.users = userArray;
     this.loading = true;
   },
   methods: {

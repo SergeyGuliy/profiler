@@ -25,37 +25,41 @@
         </div>
         <div class="header">
           <span class="badge">GitHub репозитории</span>
-          <div>
-            <input type="text" class="validate input" />
-            <button class="btn">
-              Поиск<img
-                class="right ico"
-                src="../../../assets/icons/search.png"
-                alt=""
-              />
-            </button>
+          <div class="input-field">
+            <input
+              id="last_name"
+              type="text"
+              class="validate input"
+              v-model="key"
+            />
+            <label for="last_name">Поиск</label>
           </div>
         </div>
         <div class="section-1">
           <div class="input-field center">
-            <table class="highlight centered table">
+            <table
+              v-if="publicRepositoriesFiltred.length > 0"
+              class="highlight centered table"
+            >
               <thead>
                 <tr>
-                  <th>#</th>
                   <th>Название</th>
-                  <th>Оценка</th>
+                  <th>Создатель</th>
+                  <th>Язык</th>
+                  <th>Технология</th>
                   <th>Профиль</th>
                 </tr>
               </thead>
 
               <tbody>
                 <tr
-                  v-for="repository in publicRepositories"
+                  v-for="repository in publicRepositoriesFiltred"
                   v-bind:key="repository.id"
                 >
-                  <td>{{ repository.id }}</td>
                   <td>{{ repository.name }}</td>
                   <td>{{ repository.creator }}</td>
+                  <td>{{ repository.languages }}</td>
+                  <td>{{ repository.technologies }}</td>
                   <td class="flex">
                     <router-link
                       class="btn del"
@@ -89,6 +93,7 @@
                 </tr>
               </tbody>
             </table>
+            <p v-else class="center">Поиск не дал результатов</p>
           </div>
         </div>
       </div>
@@ -105,10 +110,23 @@ export default {
   data() {
     return {
       loading: false,
+      key: "",
       publicRepositories: []
     };
   },
   computed: {
+    publicRepositoriesFiltred() {
+      if (this.key === "") {
+        return this.publicRepositories;
+      } else {
+        return this.publicRepositories.filter(value => {
+          return (
+            value.languages.toLowerCase().includes(this.key.toLowerCase()) ||
+            value.technologies.toLowerCase().includes(this.key.toLowerCase())
+          );
+        });
+      }
+    },
     myRepositoryList() {
       if (this.$store.getters.user.lists.repositories) {
         return this.$store.getters.user.lists.repositories;
@@ -125,20 +143,6 @@ export default {
     }
   },
   async mounted() {
-    const allRepositories =
-      (await this.$store.dispatch("fetchAllRepositories")) || [];
-    const publicRepositoriesId =
-      (await this.$store.dispatch("fetchPublicRepositories")) || [];
-    let publicRepositories = [];
-    for (let f of publicRepositoriesId) {
-      let repository = allRepositories[f];
-      repository.id = f;
-      publicRepositories.push(repository);
-    }
-    this.publicRepositories = publicRepositories;
-    this.loading = true;
-  },
-  async updated() {
     const allRepositories =
       (await this.$store.dispatch("fetchAllRepositories")) || [];
     const publicRepositoriesId =

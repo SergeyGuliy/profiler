@@ -15,15 +15,14 @@
       <div v-else class="grid">
         <div class="header">
           <span class="badge">Друзья</span>
-          <div>
-            <input id="search" type="text" class="validate input" />
-            <button class="btn">
-              Поиск<img
-                class="right ico"
-                src="../../assets/icons/search.png"
-                alt=""
-              />
-            </button>
+          <div class="input-field">
+            <input
+              id="last_name"
+              type="text"
+              class="validate input"
+              v-model="key"
+            />
+            <label for="last_name">Поиск</label>
           </div>
         </div>
         <div class="section-1">
@@ -34,18 +33,20 @@
             <table class="highlight centered table" v-else>
               <thead>
                 <tr>
-                  <th>#</th>
                   <th>Имя</th>
-                  <th>Оценка</th>
+                  <th>Друзей</th>
+                  <th>Статьи</th>
+                  <th>Репозитории</th>
                   <th>Профиль</th>
                 </tr>
               </thead>
 
               <tbody>
                 <tr v-for="user in users" v-bind:key="user.uid">
-                  <td>1</td>
-                  <td>{{ user.profile }}</td>
-                  <td>18</td>
+                  <td>{{ user.profile || 0 }}</td>
+                  <td>{{ user.lists.friends.length || 0 }}</td>
+                  <td>{{ user.lists.articles.length || 0 }}</td>
+                  <td>{{ user.lists.repositories.length || 0 }}</td>
                   <td class="flex">
                     <router-link
                       class="btn"
@@ -77,16 +78,28 @@
 
 <script>
 import Loader from "../../components/Loader";
+import defaultsDeep from "/mnt/d032024c-b3ba-4342-a367-51e8737d8935/IT/My_Projects/3_Vue.js/profiler/node_modules/lodash.defaultsdeep/index.js";
+
 export default {
   name: "UserFriends",
   components: { Loader },
   data() {
     return {
       loading: false,
+      key: "",
       users: []
     };
   },
   computed: {
+    myUsersFiltred() {
+      if (this.key === "") {
+        return this.users;
+      } else {
+        return this.users.filter(value => {
+          return value.profile.toLowerCase().includes(this.key.toLowerCase());
+        });
+      }
+    },
     myFriendsId() {
       if (this.$store.getters.user.lists.friends) {
         return this.$store.getters.user.lists.friends;
@@ -116,7 +129,15 @@ export default {
     const users = await this.$store.dispatch("fetchAllUsers");
     let myFriends = [];
     for (let i of this.myFriendsId) {
-      let user = users[i];
+      let userModified = users[i];
+      const userBasic = {
+        lists: {
+          friends: [],
+          articles: [],
+          repositories: []
+        }
+      };
+      const user = defaultsDeep(userModified, userBasic);
       myFriends.push(user);
     }
     this.users = myFriends;
@@ -126,7 +147,15 @@ export default {
     const users = await this.$store.dispatch("fetchAllUsers");
     let myFriends = [];
     for (let i of this.myFriendsId) {
-      let user = users[i];
+      let userModified = users[i];
+      const userBasic = {
+        lists: {
+          friends: [],
+          articles: [],
+          repositories: []
+        }
+      };
+      const user = defaultsDeep(userModified, userBasic);
       myFriends.push(user);
     }
     this.users = myFriends;
