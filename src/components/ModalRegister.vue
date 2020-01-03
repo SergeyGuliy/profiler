@@ -141,6 +141,7 @@ export default {
       };
       try {
         await this.$store.dispatch("createNewUser", formData);
+        this.$messageSuccess("Вы удачно зарегистрировались в системе.");
       } catch (e) {
         console.log(e);
       }

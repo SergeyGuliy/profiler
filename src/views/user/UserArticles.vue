@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="loading">
+    <div class="container" v-if="loading">
       <div class="grid" v-if="myArticles.length === 0">
         <div class="header">
           <span class="badge">У вас нет статей</span>
@@ -130,6 +130,7 @@ export default {
       } else {
         return this.myArticles.filter(value => {
           return (
+            value.name.toLowerCase().includes(this.key.toLowerCase()) ||
             value.languages.toLowerCase().includes(this.key.toLowerCase()) ||
             value.technologies.toLowerCase().includes(this.key.toLowerCase())
           );
@@ -158,6 +159,17 @@ export default {
     }
   },
   async mounted() {
+    const allArticles = await this.$store.dispatch("fetchAllArticles");
+    let myArticles = [];
+    for (let f of this.myArticlesId) {
+      let article = allArticles[f];
+      article.id = f;
+      myArticles.push(article);
+    }
+    this.myArticles = myArticles;
+    this.loading = true;
+  },
+  async updated() {
     const allArticles = await this.$store.dispatch("fetchAllArticles");
     let myArticles = [];
     for (let f of this.myArticlesId) {

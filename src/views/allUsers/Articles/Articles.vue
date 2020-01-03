@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="loading">
+    <div class="container" v-if="loading">
       <div class="grid" v-if="publicArticles.length === 0">
         <div class="header">
           <span class="badge">В системе нет статей</span>
@@ -73,7 +73,7 @@
                       v-if="!myArticleList.includes(article.id) && userLoggedIn"
                       v-on:click="addArticle(article.id)"
                     >
-                      <img src="../../../assets/icons/addFriend.png" alt="" />
+                      <img src="../../../assets/icons/addArticle.png" alt="" />
                     </button>
                     <button
                       class="btn del"
@@ -114,6 +114,7 @@ export default {
       } else {
         return this.publicArticles.filter(value => {
           return (
+            value.name.toLowerCase().includes(this.key.toLowerCase()) ||
             value.languages.toLowerCase().includes(this.key.toLowerCase()) ||
             value.technologies.toLowerCase().includes(this.key.toLowerCase())
           );

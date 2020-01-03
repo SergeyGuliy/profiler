@@ -2,18 +2,12 @@
   <div id="modalBecomeAdmin" class="modal">
     <div class="modal-content">
       <form>
-        <h4 class="center">Хотите стать Администратором?</h4>
+        <h5 class="center">Хотите стать Администратором?</h5>
         <div class="row">
           <div class="input-field col s12">
             <ul class="collection with-header">
               <li class="collection-header">
-                <h5>Вы получите возможность:</h5>
-              </li>
-              <li class="collection-item">
-                Удалять публичные статьи и репозитории.
-              </li>
-              <li class="collection-item">
-                Редактировать публичные статьи и репозитории.
+                <h6>Вы получите возможность:</h6>
               </li>
               <li class="collection-item">
                 Редактировать список Языков програмирпования и технологий
@@ -37,6 +31,7 @@ export default {
   name: "ModalBecomeAdmin",
   methods: {
     async becomeAdmin() {
+      this.$messageSuccess(`Вы стали администратором`);
       await this.$store.dispatch("becomeAdmin");
     }
   }

@@ -6,7 +6,7 @@
       </nav>
     </header>
     <main>
-      <article class="container">
+      <article>
         <router-view />
       </article>
     </main>
@@ -63,23 +63,9 @@ export default {
 <style scoped lang="sass">
 .main-layout
   width: 100%
-main
-  margin-top: 67px !important
-  width: 100%
 header
   position: fixed
   width: 100%
   top: 0
   z-index: 11
-.container
-  max-width: 2000px !important
-  min-height: calc(100vh - 67px)
-  padding: 5px 0
-  @media screen and (min-width: 601px)
-    width: 85% !important
-  @media screen and (min-width: 993px)
-    width: 90% !important
-.sidenav-overlay
-  left: 300px !important
-  transition: 50ms ease all
 </style>

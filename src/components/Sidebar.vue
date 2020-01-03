@@ -8,7 +8,9 @@
       <router-link active-class="active" to="/articles">Статьи</router-link>
     </li>
     <li>
-      <router-link active-class="active" to="/repositories">GitHub</router-link>
+      <router-link active-class="active" to="/repositories"
+        >Репозитории</router-link
+      >
     </li>
     <li><div class="divider"></div></li>
   </ul>

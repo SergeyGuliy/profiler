@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="loading">
+    <div class="container" v-if="loading">
       <div class="grid" v-if="publicRepositories.length === 0">
         <div class="header">
           <span class="badge">В системе нет репозиториев</span>
@@ -78,7 +78,7 @@
                       "
                       v-on:click="addRepository(repository.id)"
                     >
-                      <img src="../../../assets/icons/addFriend.png" alt="" />
+                      <img src="../../../assets/icons/addArticle.png" alt="" />
                     </button>
                     <button
                       class="btn del"
@@ -121,6 +121,7 @@ export default {
       } else {
         return this.publicRepositories.filter(value => {
           return (
+            value.name.toLowerCase().includes(this.key.toLowerCase()) ||
             value.languages.toLowerCase().includes(this.key.toLowerCase()) ||
             value.technologies.toLowerCase().includes(this.key.toLowerCase())
           );

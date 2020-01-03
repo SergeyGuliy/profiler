@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="loading">
+    <div class="container" v-if="loading">
       <div class="grid" v-if="users.length === 0">
         <div class="header">
           <span class="badge">У вас нет контактов</span>

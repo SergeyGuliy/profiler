@@ -1,3 +1,17 @@
+//Styles for all project
+main
+  margin-top: 64px !important
+  width: 100%
+  @media screen and (max-width: 600px)
+    margin-top: 56px !important
+.container
+  max-width: 2000px !important
+  min-height: calc(100vh - 67px)
+  padding: 3px 0
+  width: 90% !important
+  @media screen and (max-width: 650px)
+    width: 98% !important
+
 .grid
   margin-top: 25px
   display: grid
@@ -6,91 +20,105 @@
   grid-row-gap: 15px
   .header
     grid-area: head
-    padding: 5px 15px
+    padding: 5px 5px
     border: 3px solid #e3e3e3
     border-radius: 5px
     display: flex
     justify-content: space-between
     align-items: center
-    .btn
-      margin-left: 5px
-      @media screen and (max-width: 800px)
-        font-size: 10px
-        height: 30px
-        line-height: 30px
-        padding: 0 5px
-    span.badge
-      margin: 0
-      padding: 0
-      @media screen and (max-width: 800px)
-        font-size: 12px
-    div
-      display: flex
-      .input
-        display: block
-        width: 150px
-        height: 36px
-        margin: 0 10px 0 0
-        @media screen and (max-width: 800px)
-          height: 30px
-          line-height: 30px
   .section-1
     grid-area: sec1
-    padding: 15px
-    border: 3px solid #e3e3e3
-    border-radius: 5px
   .section-2
     grid-area: sec2
-    padding: 15px
-    border: 3px solid #e3e3e3
-    border-radius: 5px
   .section-3
     grid-area: sec3
+  .section-1, .section-2, .section-3
     padding: 15px
     border: 3px solid #e3e3e3
     border-radius: 5px
 
 
+.header
+  span.badge
+    margin: 0
+    padding: 0
+    @media screen and (max-width: 800px)
+      font-size: 12px
+  div
+    display: flex
+    .input
+      width: 150px
+      height: 30px
+      margin: 0 3px 0 0
+      @media screen and (max-width: 550px)
+        height: 30px
+        width: 90px
+    label
+      @media screen and (max-width: 400px)
+        font-size: 10px
+    .btn
+      padding: 0 10px
+      margin: 0 1px
+      @media screen and (max-width: 800px)
+        padding: 0 5px
+      img.right
+        margin: 7px 0
+        height: 22px
+      span
+        @media screen and (max-width: 800px)
+          margin: 0 5px 0 0
+          display: none
 
-  table.table.highlight.centered
-    th, td
-      padding: 5px 4px
-      height: 47px
+
+
+//Styles for table
+table.table.highlight.centered
+  th, td
+    padding: 5px 4px
+    height: 47px
+    font-size: 11px
+    @media screen and (min-width: 900px)
+      font-size: 14px
+    .btn
+      padding: 0 5px
+      margin: 0
+      height: 25px
+      line-height: 25px
       font-size: 11px
       @media screen and (min-width: 900px)
         font-size: 14px
-      .btn
-        padding: 0 5px
-        margin: 0
-        height: 25px
-        line-height: 25px
-        font-size: 11px
-        @media screen and (min-width: 900px)
-          font-size: 14px
-          height: 30px
-          line-height: 30px
-    td.flex
+        height: 30px
+        line-height: 30px
+  td.flex
+    display: flex
+    justify-content: center
+    align-items: center
+    .btn
       display: flex
       justify-content: center
       align-items: center
-      .btn
-        display: flex
-        justify-content: center
-        align-items: center
-        margin: 0 2px
-        img
-          height: 25px
-      .del
-        background-color: orange
+      margin: 0 2px
+      img
+        height: 25px
+    .del
+      background-color: orange
 
 
-  img.right
-    margin: 7px 0 7px 10px
-    height: 22px
-    @media screen and (max-width: 800px)
-      display: none
+//Slyles for modules
+.sidenav-overlay
+  left: 300px !important
+  transition: 50ms ease all
 
 .btn-floating
   position: fixed
   bottom: 25px
   right: 25px
+
+.toast-error
+  background-color: red
+.toast-success
+  background-color: green
+
+
+
+

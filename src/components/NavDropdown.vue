@@ -3,9 +3,12 @@
     <div v-if="this.$store.getters.user.profile">
       <ul class="right">
         <li>
-          <a class="dropdown-trigger" href="#" data-target="dropdown1"
-            >Здраствуйте {{ $store.getters.user.profile
-            }}<i class="material-icons right">arrow_drop_down</i></a
+          <a class="dropdown-trigger" href="#" data-target="dropdown1">
+            <div class="flex-nav">
+              <span>Здраствуйте,</span>
+              <span>{{ $store.getters.user.profile }}</span>
+            </div>
+            <i class="material-icons right">arrow_drop_down</i></a
           >
         </li>
       </ul>
@@ -109,6 +112,7 @@ export default {
   methods: {
     async logOut() {
       await this.$store.dispatch("logOut");
+      this.$messageError("Вы вышли из системы.");
     }
   },
   async mounted() {
@@ -128,10 +132,32 @@ export default {
 </script>
 
 <style scoped lang="sass">
-i.right
-  margin: 0 !important
-.nav-content div
-  margin-left: 10px
+
 .dropdown-trigger
   padding:  0 5px !important
+
+
+ul.dropdown-content li a
+  padding: 14px 10px !important
+
+
+ul.right li a.dropdown-trigger
+  min-width: 150px
+  display: flex
+  justify-content: center
+  align-items: center
+  .flex-nav
+    display: flex
+    justify-content: start
+    align-items: start
+    flex-direction: row
+    width: 100% -24px
+    @media screen and (max-width: 400px)
+      flex-direction: column
+    span
+      line-height: 16px
+      margin: 0 3px
+i.material-icons
+  margin: 0 !important
+  width: 20px
 </style>

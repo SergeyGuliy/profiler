@@ -1,10 +1,12 @@
 <template>
   <div>
-    <div v-if="loading">
+    <div class="container" v-if="loading">
       <div class="grid" v-if="$store.getters.user.profile">
         <div class="header">
           <div>
-            <span v-if="user.info.first_name || user.info.second_name"
+            <span
+              class="badge"
+              v-if="user.info.first_name || user.info.second_name"
               >{{ user.info.first_name }} {{ user.info.second_name }}
             </span>
             <span v-else class="badge">{{ user.profile }}</span>
@@ -115,7 +117,7 @@
               Телефон:
               <a
                 target="_blank"
-                :to="'tel:' + user.contacts.phone"
+                :href="'tel:' + user.contacts.phone"
                 v-if="user.contacts.phone"
                 class="right"
                 >{{ user.contacts.phone }}</a
@@ -297,6 +299,11 @@
           </ul>
         </div>
       </div>
+      <div class="grid" v-else>
+        <div class="header">
+          <span class="badge">Вы не в системе</span>
+        </div>
+      </div>
     </div>
     <Loader v-else />
   </div>
@@ -361,7 +368,6 @@ export default {
       );
       this.gitHubInfo = await fetchGithub.json();
     }
-
     this.loading = true;
   },
   updated() {

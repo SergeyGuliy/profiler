@@ -25,7 +25,7 @@
       </li>
       <li>
         <router-link active-class="active" to="/repositories"
-          >GitHub</router-link
+          >Репозитории</router-link
         >
       </li>
     </ul>
@@ -42,8 +42,11 @@ export default {
 </script>
 
 <style scoped lang="sass">
+.sidenav-trigger
+  margin: 0 5px
 .brand-logo
   position: static !important
+  padding: 0 5px !important
 img.right
   width: 22px
 li > a

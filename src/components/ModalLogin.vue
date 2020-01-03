@@ -96,6 +96,7 @@ export default {
       };
       try {
         await this.$store.dispatch("logIn", formData);
+        this.$messageSuccess("Вы удачно вошли в систему.");
       } catch (e) {
         console.log(e);
       }

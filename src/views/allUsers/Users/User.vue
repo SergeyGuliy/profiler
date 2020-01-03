@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="loading">
+    <div class="container" v-if="loading">
       <div class="grid" v-if="user.profile">
         <div class="header">
           <div>

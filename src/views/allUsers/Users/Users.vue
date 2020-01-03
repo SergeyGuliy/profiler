@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="loading">
+    <div class="container" v-if="loading">
       <div class="grid" v-if="users.length === 0">
         <div class="header">
           <span class="badge">В системе нет пользователей</span>
@@ -53,14 +53,22 @@
                     </router-link>
                     <button
                       class="btn del"
-                      v-if="!friendsList.includes(user.id) && userLoggedIn"
+                      v-if="
+                        !friendsList.includes(user.id) &&
+                          userLoggedIn &&
+                          user.id != $store.getters.user.id
+                      "
                       v-on:click="addFriend(user.id)"
                     >
                       <img src="../../../assets/icons/addFriend.png" alt="" />
                     </button>
                     <button
                       class="btn del"
-                      v-if="friendsList.includes(user.id) && userLoggedIn"
+                      v-if="
+                        friendsList.includes(user.id) &&
+                          userLoggedIn &&
+                          user.id != $store.getters.user.id
+                      "
                       v-on:click="deleteFriend(user.id)"
                     >
                       <img src="../../../assets/icons/delete.png" alt="" />
@@ -132,13 +140,6 @@ export default {
       const user = defaultsDeep(userModified, userBasic);
 
       userArray.push(user);
-    }
-    if (this.userLoggedIn) {
-      if (Object.keys(users).length === 1) {
-        users = [];
-      } else if (Object.keys(users).length > 1) {
-        delete users[this.$store.getters.user.id];
-      }
     }
     this.users = userArray;
     this.loading = true;

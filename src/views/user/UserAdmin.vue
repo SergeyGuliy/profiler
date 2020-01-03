@@ -1,115 +1,117 @@
 <template>
   <div>
-    <div class="grid" v-if="loading">
-      <div class="header">
-        <span class="badge">Админка</span>
-      </div>
-      <div class="section-1">
-        <div class="row">
-          <div class="input-field center col s12">
-            <input
-              id="programingLanguages"
-              type="text"
-              v-model="programingLanguage"
+    <div class="container" v-if="loading">
+      <div class="grid">
+        <div class="header">
+          <span class="badge">Админка</span>
+        </div>
+        <div class="section-1">
+          <div class="row">
+            <div class="input-field center col s12">
+              <input
+                id="programingLanguages"
+                type="text"
+                v-model="programingLanguage"
+                v-bind:class="{
+                  invalid:
+                    !$v.programingLanguage.required ||
+                    !$v.programingLanguage.minLength ||
+                    !$v.programingLanguage.maxLength
+                }"
+              />
+              <label for="programingLanguages">Язык програмирования</label>
+            </div>
+            <button
+              class="btn col s12"
+              v-on:click="addLanguage"
               v-bind:class="{
-                invalid:
+                disabled:
                   !$v.programingLanguage.required ||
                   !$v.programingLanguage.minLength ||
                   !$v.programingLanguage.maxLength
               }"
-            />
-            <label for="programingLanguages">Язык програмирования</label>
+            >
+              Добавить
+            </button>
           </div>
-          <button
-            class="btn col s12"
-            v-on:click="addLanguage"
-            v-bind:class="{
-              disabled:
-                !$v.programingLanguage.required ||
-                !$v.programingLanguage.minLength ||
-                !$v.programingLanguage.maxLength
-            }"
-          >
-            Добавить
-          </button>
+          <ul class="collection">
+            <li
+              class="collection-item"
+              v-for="language in programingLanguages"
+              v-bind:key="language.name"
+            >
+              <div>
+                {{ language.name
+                }}<button
+                  class="btn secondary-content"
+                  v-on:click="deleteLanguage(language.name)"
+                >
+                  Удалить
+                </button>
+              </div>
+            </li>
+          </ul>
         </div>
-        <ul class="collection">
-          <li
-            class="collection-item"
-            v-for="language in programingLanguages"
-            v-bind:key="language.name"
-          >
-            <div>
-              {{ language.name
-              }}<button
-                class="btn secondary-content"
-                v-on:click="deleteLanguage(language.name)"
-              >
-                Удалить
-              </button>
+        <div class="section-2">
+          <div class="row">
+            <div class="input-field col s12">
+              <select v-model="programingLanguageSelected">
+                <option
+                  v-for="language in programingLanguages"
+                  v-bind:key="language.name"
+                  v-bind:value="language.name"
+                  >{{ language.name }}</option
+                >
+              </select>
+              <label>Materialize Select</label>
             </div>
-          </li>
-        </ul>
-      </div>
-      <div class="section-2">
-        <div class="row">
-          <div class="input-field col s12">
-            <select v-model="programingLanguageSelected">
-              <option
-                v-for="language in programingLanguages"
-                v-bind:key="language.name"
-                v-bind:value="language.name"
-                >{{ language.name }}</option
-              >
-            </select>
-            <label>Materialize Select</label>
-          </div>
-          <div class="input-field center col s12">
-            <input
-              id="technology"
-              type="text"
-              v-model="technology"
+            <div class="input-field center col s12">
+              <input
+                id="technology"
+                type="text"
+                v-model="technology"
+                v-bind:class="{
+                  invalid:
+                    !$v.technology.required ||
+                    !$v.technology.minLength ||
+                    !$v.technology.maxLength ||
+                    !programingLanguageSelected
+                }"
+              />
+              <label for="technology">Технологии</label>
+            </div>
+            <button
+              class="btn col s12"
+              v-on:click="addTechnology"
               v-bind:class="{
-                invalid:
+                disabled:
                   !$v.technology.required ||
                   !$v.technology.minLength ||
                   !$v.technology.maxLength ||
                   !programingLanguageSelected
               }"
-            />
-            <label for="technology">Технологии</label>
+            >
+              Добавить
+            </button>
           </div>
-          <button
-            class="btn col s12"
-            v-on:click="addTechnology"
-            v-bind:class="{
-              disabled:
-                !$v.technology.required ||
-                !$v.technology.minLength ||
-                !$v.technology.maxLength ||
-                !programingLanguageSelected
-            }"
-          >
-            Добавить
-          </button>
+          <ul class="collection">
+            <li
+              class="collection-item"
+              v-for="technology in languageTechnologies"
+              v-bind:key="technology"
+            >
+              <div>
+                {{ technology
+                }}<button
+                  class="btn secondary-content"
+                  v-on:click="deleteTechnology(technology)"
+                >
+                  Удалить
+                </button>
+              </div>
+            </li>
+          </ul>
         </div>
-        <ul class="collection">
-          <li
-            class="collection-item"
-            v-for="technology in languageTechnologies"
-            v-bind:key="technology"
-          >
-            <div>
-              {{ technology
-              }}<button
-                class="btn secondary-content"
-                v-on:click="deleteTechnology(technology)"
-              >
-                Удалить
-              </button>
-            </div>
-          </li>
-        </ul>
       </div>
     </div>
     <Loader v-else />
@@ -142,19 +144,10 @@ export default {
   },
   computed: {
     languageTechnologies() {
-      if (
-        this.programingLanguageSelected ||
-        this.programingLanguages[this.programingLanguageSelected]
-      ) {
-        if (
-          this.programingLanguages[this.programingLanguageSelected].technologies
-        ) {
-          return this.programingLanguages[this.programingLanguageSelected]
-            .technologies;
-        } else {
-          return [];
-        }
-      } else {
+      try {
+        return this.programingLanguages[this.programingLanguageSelected]
+          .technologies;
+      } catch (e) {
         return [];
       }
     }
@@ -165,6 +158,9 @@ export default {
         name: this.programingLanguage,
         technologies: []
       };
+      this.$messageSuccess(
+        `Вы добавили язык програмирования: ${this.programingLanguage}`
+      );
       this.programingLanguage = "";
       await this.$store.dispatch("updateCategories", this.programingLanguages);
     },
@@ -172,9 +168,10 @@ export default {
       if (this.programingLanguageSelected === language) {
         this.programingLanguageSelected = "";
       }
-      this.programingLanguages = await this.$store.dispatch("fetchCategories");
       delete this.programingLanguages[language];
+      this.$messageError(`Вы удалили язык програмирования: ${language}`);
       await this.$store.dispatch("updateCategories", this.programingLanguages);
+      this.programingLanguages = await this.$store.dispatch("fetchCategories");
     },
     async addTechnology() {
       if (
@@ -189,8 +186,10 @@ export default {
           this.programingLanguageSelected
         ].technologies.push(this.technology);
       }
+      this.$messageSuccess(`Вы добавили технологию: ${this.technology}`);
       this.technology = "";
       await this.$store.dispatch("updateCategories", this.programingLanguages);
+      this.programingLanguages = await this.$store.dispatch("fetchCategories");
     },
     async deleteTechnology(technology) {
       this.programingLanguages = await this.$store.dispatch("fetchCategories");
@@ -199,6 +198,7 @@ export default {
       ].technologies.findIndex(function(index) {
         return index === technology;
       });
+      this.$messageError(`Вы удалили технологию: ${technology}`);
       this.programingLanguages[
         this.programingLanguageSelected
       ].technologies.splice(technologyIndex, 1);
@@ -217,13 +217,11 @@ export default {
 </script>
 
 <style scoped lang="sass">
-.grid
-  grid-template-rows: 72px 1fr 1fr 1fr
-  grid-template-areas: 'head head head head head head' 'sec1 sec1 sec1 sec2 sec2 sec2' 'sec1 sec1 sec1 sec2 sec2 sec2' 'sec1 sec1 sec1 sec2 sec2 sec2'
-  @media screen and (max-width: 900px)
-    grid-template-areas: 'head head head head head head' 'sec1 sec1 sec1 sec2 sec2 sec2' 'sec1 sec1 sec1 sec2 sec2 sec2'
-  @media screen and (max-width: 600px)
-    grid-template-areas: 'head head head head head head' 'sec1 sec1 sec1 sec1 sec1 sec1' 'sec2 sec2 sec2 sec2 sec2 sec2'
+  .grid
+    grid-template-rows: 72px 1fr 1fr 1fr
+    grid-template-areas: 'head head head head head head' 'sec1 sec1 sec1 sec2 sec2 sec2' 'sec1 sec1 sec1 sec2 sec2 sec2' 'sec1 sec1 sec1 sec2 sec2 sec2'
+    @media screen and (max-width: 800px)
+      grid-template-areas: 'head head head head head head' 'sec1 sec1 sec1 sec1 sec1 sec1' 'sec2 sec2 sec2 sec2 sec2 sec2'
 
 .center
   min-height: 51px !important
