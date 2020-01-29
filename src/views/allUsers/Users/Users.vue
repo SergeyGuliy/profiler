@@ -88,7 +88,7 @@
 
 <script>
 import Loader from "../../../components/Loader";
-import defaultsDeep from "/mnt/d032024c-b3ba-4342-a367-51e8737d8935/IT/My_Projects/3_Vue.js/profiler/node_modules/lodash.defaultsdeep/index.js";
+import { defaultsDeep }  from "lodash";
 
 export default {
   name: "Users",
