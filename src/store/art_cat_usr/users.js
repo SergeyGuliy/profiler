@@ -1,5 +1,5 @@
 import firebase from "firebase/app";
-import defaultsDeep from "../../../node_modules/lodash.defaultsdeep/index.js";
+import { defaultsDeep } from "lodash";
 
 export default {
   actions: {

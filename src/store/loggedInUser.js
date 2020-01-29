@@ -1,5 +1,6 @@
-import defaultsDeep from "../../node_modules/lodash.defaultsdeep/index.js";
+import { defaultsDeep } from "lodash";
 import firebase from "firebase/app";
+
 export default {
   actions: {
     async fetchUser({ dispatch, commit }) {
