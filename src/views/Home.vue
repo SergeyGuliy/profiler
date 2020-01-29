@@ -333,40 +333,44 @@ export default {
     M.Collapsible.init(document.querySelectorAll(".collapsible"));
     await this.$store.dispatch("fetchUser");
     // Fetching user Articles
-    const allArticles = await this.$store.dispatch("fetchAllArticles");
-    let myArticles = [];
-    for (let f of this.user.lists.articles) {
-      let article = allArticles[f];
-      article.id = f;
-      myArticles.push(article);
-    }
-    this.myArticles = myArticles;
-    // Fetching user Friends
-    const users = await this.$store.dispatch("fetchAllUsers");
-    let myFriends = [];
-    for (let i of this.user.lists.friends) {
-      let user = users[i];
-      myFriends.push(user);
-    }
-    this.myFriends = myFriends;
-    // Fetching user Repositories
-    const allRepositories = await this.$store.dispatch("fetchAllRepositories");
-    let myRepositories = [];
-    for (let f of this.user.lists.repositories) {
-      let repository = allRepositories[f];
-      repository.id = f;
-      myRepositories.push(repository);
-    }
-    this.myRepositories = myRepositories;
-    // Fetching GitHub info
-    if (this.user.contacts.github) {
-      let gitHubName = this.user.contacts.github.split("/")[
-        this.user.contacts.github.split("/").length - 1
-      ];
-      let fetchGithub = await fetch(
-        `https://api.github.com/users/${gitHubName}`
+    if (this.$store.getters.user.profile) {
+      const allArticles = await this.$store.dispatch("fetchAllArticles");
+      let myArticles = [];
+      for (let f of this.user.lists.articles) {
+        let article = allArticles[f];
+        article.id = f;
+        myArticles.push(article);
+      }
+      this.myArticles = myArticles;
+      // Fetching user Friends
+      const users = await this.$store.dispatch("fetchAllUsers");
+      let myFriends = [];
+      for (let i of this.user.lists.friends) {
+        let user = users[i];
+        myFriends.push(user);
+      }
+      this.myFriends = myFriends;
+      // Fetching user Repositories
+      const allRepositories = await this.$store.dispatch(
+        "fetchAllRepositories"
       );
-      this.gitHubInfo = await fetchGithub.json();
+      let myRepositories = [];
+      for (let f of this.user.lists.repositories) {
+        let repository = allRepositories[f];
+        repository.id = f;
+        myRepositories.push(repository);
+      }
+      this.myRepositories = myRepositories;
+      // Fetching GitHub info
+      if (this.user.contacts.github) {
+        let gitHubName = this.user.contacts.github.split("/")[
+          this.user.contacts.github.split("/").length - 1
+        ];
+        let fetchGithub = await fetch(
+          `https://api.github.com/users/${gitHubName}`
+        );
+        this.gitHubInfo = await fetchGithub.json();
+      }
     }
     this.loading = true;
   },

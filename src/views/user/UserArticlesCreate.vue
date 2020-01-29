@@ -97,16 +97,6 @@
             />
             <label for="site">Официальный сайт</label>
           </div>
-          <div class="input-field center">
-            <input
-              id="repository"
-              type="url"
-              class="validate"
-              placeholder="https://github.com/USER/REPOSITORY"
-              v-model="article.repository"
-            />
-            <label for="site">Git Hub репозиторий</label>
-          </div>
         </div>
       </div>
     </div>
@@ -132,7 +122,6 @@ export default {
         technologies: "",
         about: "",
         cite: "",
-        repository: "",
         accessibility: "private"
       }
     };
@@ -160,7 +149,6 @@ export default {
     this.programingLanguages = await this.$store.dispatch("fetchCategories");
     M.updateTextFields();
     M.FormSelect.init(document.querySelectorAll("select"));
-    console.log(this.programingLanguages);
     this.loading = true;
   },
   updated() {
@@ -176,9 +164,6 @@ export default {
         about: this.article.about,
         cite: this.article.cite.split("://")[
           this.article.cite.split("://").length - 1
-        ],
-        repository: this.article.repository.split("https://github.com/")[
-          this.article.repository.split("https://github.com/").length - 1
         ],
         accessibility: this.article.accessibility,
         languages: this.article.languages,

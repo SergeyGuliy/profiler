@@ -1,25 +1,31 @@
 import firebase from "firebase/app";
+
 export default {
   actions: {
     async createRepository({ dispatch, getters }, repositoryData) {
-      await firebase
-        .database()
-        .ref(`repositories/${repositoryData.id}/`)
-        .set({
-          creator: getters.user.profile,
-          creator_id: getters.user.id,
-          slug: repositoryData.slug,
-          name: repositoryData.name,
-          about: repositoryData.about,
-          cite: repositoryData.cite,
-          repository: repositoryData.repository,
-          accessibility: repositoryData.accessibility,
-          languages: repositoryData.languages,
-          technologies: repositoryData.technologies
-        });
-      await dispatch("makeRepositoryPrivate", repositoryData);
-      if (repositoryData.accessibility === "public") {
-        await dispatch("makeRepositoryPublic", repositoryData);
+      try {
+        await firebase
+          .database()
+          .ref(`repositories/${repositoryData.id}/`)
+          .set({
+            creator: getters.user.profile,
+            creator_id: getters.user.id,
+            slug: repositoryData.slug,
+            name: repositoryData.name,
+            about: repositoryData.about,
+            cite: repositoryData.cite,
+            repository: repositoryData.repository,
+            accessibility: repositoryData.accessibility,
+            languages: repositoryData.languages,
+            technologies: repositoryData.technologies
+          });
+        await dispatch("makeRepositoryPrivate", repositoryData);
+        if (repositoryData.accessibility === "public") {
+          await dispatch("makeRepositoryPublic", repositoryData);
+        }
+      } catch (e) {
+        console.log("Failed to create Repository");
+        console.log(e);
       }
     },
     async makeRepositoryPrivate({ dispatch, getters, commit }, repositoryData) {
@@ -48,23 +54,35 @@ export default {
         .set(repositories);
     },
     async fetchAllRepositories() {
-      const allRepositories = (
-        await firebase
-          .database()
-          .ref(`/repositories/`)
-          .once("value")
-      ).val();
-      return allRepositories;
+      return (
+        (
+          await firebase
+            .database()
+            .ref(`/repositories/`)
+            .once("value")
+        ).val() || []
+      );
     },
-    async fetchPublicRepositories() {
-      const publicRepositories =
+    async fetchARepositoryById({ dispatch }, id) {
+      dispatch;
+      return (
+        (
+          await firebase
+            .database()
+            .ref(`/repositories/${id}/`)
+            .once("value")
+        ).val() || []
+      );
+    },
+    async fetchPublicRepositoriesIds() {
+      return (
         (
           await firebase
             .database()
             .ref(`/systemData/repositories/`)
             .once("value")
-        ).val() || [];
-      return publicRepositories;
+        ).val() || []
+      );
     },
     async updateRepositoriesList({ dispatch, getters }) {
       try {
@@ -75,19 +93,6 @@ export default {
           .set(getters.user.lists.repositories);
       } catch (e) {
         console.log(e);
-      }
-    },
-    async fetchARepositoryById({ dispatch }, id) {
-      dispatch;
-      try {
-        return (
-          await firebase
-            .database()
-            .ref(`/repositories/${id}/`)
-            .once("value")
-        ).val();
-      } catch (e) {
-        console.log("User is not Logged In");
       }
     }
   }

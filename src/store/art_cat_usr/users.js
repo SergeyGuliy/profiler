@@ -5,11 +5,13 @@ export default {
   actions: {
     async fetchAllUsers() {
       return (
-        await firebase
-          .database()
-          .ref(`/users/`)
-          .once("value")
-      ).val();
+        (
+          await firebase
+            .database()
+            .ref(`/users/`)
+            .once("value")
+        ).val() || []
+      );
     },
     async updateFriendsList({ dispatch, getters }) {
       try {

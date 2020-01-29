@@ -147,12 +147,14 @@ export default {
     const allRepositories =
       (await this.$store.dispatch("fetchAllRepositories")) || [];
     const publicRepositoriesId =
-      (await this.$store.dispatch("fetchPublicRepositories")) || [];
+      (await this.$store.dispatch("fetchPublicRepositoriesIds")) || [];
     let publicRepositories = [];
     for (let f of publicRepositoriesId) {
-      let repository = allRepositories[f];
-      repository.id = f;
-      publicRepositories.push(repository);
+      if (allRepositories[f] !== undefined) {
+        let repository = allRepositories[f];
+        repository.id = f;
+        publicRepositories.push(repository);
+      }
     }
     this.publicRepositories = publicRepositories;
     this.loading = true;

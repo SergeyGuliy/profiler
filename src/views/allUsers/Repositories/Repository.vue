@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container" v-if="loading">
-      <div v-if="repository">
+      <div v-if="!gitHubInfo.message">
         <div class="grid" v-if="loading">
           <div class="header">
             <div>
@@ -36,8 +36,11 @@
               </li>
               <li class="collection-header"><h5>Описание:</h5></li>
               <li class="collection-item">
-                <pre v-if="repository.about">{{ repository.about }}</pre>
-                <pre v-else>Не указано</pre>
+                <p v-if="repository.about">{{ repository.about }}</p>
+                <p v-else-if="gitHubInfo.description">
+                  {{ gitHubInfo.description }}
+                </p>
+                <p v-else>Не указано</p>
               </li>
             </ul>
           </div>
@@ -64,10 +67,22 @@
               >
                 <h5>Ссылки:</h5>
               </li>
-              <li class="collection-item" v-if="repository.cite">
-                На официальный сайт:<a
+              <li
+                class="collection-item"
+                v-if="repository.cite || gitHubInfo.homepage"
+              >
+                На официальный сайт:
+                <a
                   target="_blank"
+                  v-if="repository.cite"
                   :href="'http://' + repository.cite"
+                  class="right"
+                  >{{ repository.cite }}</a
+                >
+                <a
+                  target="_blank"
+                  v-else
+                  :href="gitHubInfo.homepage"
                   class="right"
                   >{{ repository.cite }}</a
                 >
@@ -84,7 +99,7 @@
           </div>
         </div>
       </div>
-      <Error v-else />
+      <Error v-else message="Ошибка получения доступа к GitHub" />
     </div>
     <Loader v-else />
   </div>
@@ -99,7 +114,8 @@ export default {
   data() {
     return {
       loading: false,
-      repository: ""
+      repository: "",
+      gitHubInfo: ""
     };
   },
   async mounted() {
@@ -107,7 +123,10 @@ export default {
       "fetchARepositoryById",
       this.$route.params.repository
     );
-    console.log(this.repository);
+    this.gitHubInfo = await (
+      await fetch(`https://api.github.com/repos/${this.repository.repository}`)
+    ).json();
+    console.log(this.gitHubInfo);
     this.loading = true;
   }
 };
