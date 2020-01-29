@@ -1,7 +1,8 @@
 <template>
   <div class="flex">
     <img src="../assets/icons/error.png" alt="" />
-    <p>Error</p>
+    <p v-if="message">{{ message }}</p>
+    <p v-else>Error</p>
     <router-link to="/" class="btn"
       >На главную <img src="../assets/icons/home.png" alt=""
     /></router-link>
@@ -10,7 +11,8 @@
 
 <script>
 export default {
-  name: "Error"
+  name: "Error",
+  props: ["message"]
 };
 </script>
 

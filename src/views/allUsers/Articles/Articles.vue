@@ -139,12 +139,15 @@ export default {
   async mounted() {
     const allArticles = (await this.$store.dispatch("fetchAllArticles")) || [];
     const publicArticlesId =
-      (await this.$store.dispatch("fetchPublicArticles")) || [];
+      (await this.$store.dispatch("fetchPublicArticlesIds")) || [];
     let publicArticles = [];
     for (let f of publicArticlesId) {
-      let article = allArticles[f];
-      article.id = f;
-      publicArticles.push(article);
+      if (allArticles[f] !== undefined) {
+        console.log(typeof f === "number");
+        let article = allArticles[f];
+        article.id = f;
+        publicArticles.push(article);
+      }
     }
     this.publicArticles = publicArticles;
     this.loading = true;

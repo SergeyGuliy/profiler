@@ -140,12 +140,12 @@ export default {
     repository: {
       name: {
         minLength: minLength(3),
-        maxLength: maxLength(10),
+        maxLength: maxLength(20),
         required
       },
       repository: {
         minLength: minLength(17),
-        maxLength: maxLength(30),
+        maxLength: maxLength(100),
         required
       }
     }

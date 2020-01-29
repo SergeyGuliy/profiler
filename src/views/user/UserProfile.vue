@@ -215,7 +215,8 @@ export default {
     this.programingLanguages = await this.$store.dispatch("fetchCategories");
     M.updateTextFields();
     M.Datepicker.init(document.querySelectorAll(".datepicker"), {
-      format: "dd.mm.yyyy"
+      format: "dd.mm.yyyy",
+      yearRange: 50,
     });
     M.FormSelect.init(document.querySelectorAll("select"));
     this.userUpdated = this.$store.getters.user;
@@ -224,7 +225,8 @@ export default {
   updated() {
     M.updateTextFields();
     M.Datepicker.init(document.querySelectorAll(".datepicker"), {
-      format: "dd.mm.yyyy"
+      format: "dd.mm.yyyy",
+      yearRange: 50,
     });
     M.FormSelect.init(document.querySelectorAll("select"));
   },

@@ -70,14 +70,6 @@
                   >{{ article.cite }}</a
                 >
               </li>
-              <li class="collection-item" v-if="article.repository">
-                На GitHub репозиторий:<a
-                  target="_blank"
-                  :href="'https://github.com/' + article.repository"
-                  class="right"
-                  >{{ article.repository }}</a
-                >
-              </li>
             </ul>
           </div>
         </div>

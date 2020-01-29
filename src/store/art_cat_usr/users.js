@@ -1,15 +1,17 @@
 import firebase from "firebase/app";
-import defaultsDeep from "/mnt/d032024c-b3ba-4342-a367-51e8737d8935/IT/My_Projects/3_Vue.js/profiler/node_modules/lodash.defaultsdeep/index.js";
+import defaultsDeep from "../../../node_modules/lodash.defaultsdeep/index.js";
 
 export default {
   actions: {
     async fetchAllUsers() {
       return (
-        await firebase
-          .database()
-          .ref(`/users/`)
-          .once("value")
-      ).val();
+        (
+          await firebase
+            .database()
+            .ref(`/users/`)
+            .once("value")
+        ).val() || []
+      );
     },
     async updateFriendsList({ dispatch, getters }) {
       try {

@@ -3,14 +3,14 @@ import firebase from "firebase/app";
 export default {
   actions: {
     async fetchCategories() {
-      const categories =
+      return (
         (
           await firebase
             .database()
             .ref(`/systemData/categories/`)
             .once("value")
-        ).val() || {};
-      return categories;
+        ).val() || {}
+      );
     },
     async updateCategories({ getters }, categories) {
       try {

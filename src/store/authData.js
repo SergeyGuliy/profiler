@@ -2,12 +2,7 @@ import firebase from "firebase/app";
 export default {
   actions: {
     async getUid() {
-      const user = await firebase.auth().currentUser;
-      if (user) {
-        return user.uid;
-      } else {
-        return null;
-      }
+      return (await firebase.auth().currentUser).uid;
     },
     async createNewUser({ dispatch }, { email, password }) {
       try {
@@ -23,7 +18,8 @@ export default {
           });
         await dispatch("fetchUser");
       } catch (e) {
-        console.log("e");
+        console.log("Failed to create user");
+        console.log(e);
       }
     },
     async logIn({ dispatch }, { email, password }) {
